@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">SystemDyplomant</string>
+    <string name="app_name">System Dyplomant</string>
+
+    <!--subject_list_item-->
+    <string name="text_subject_title_text">Temat:</string>
+    <string name="text_subject_text">Gra mobilna z wykorzystaniem wirtualnej rzeczywistości</string>
+    <string name="text_supervisor_title_text">Promotor:</string>
+    <string name="text_supervisor_text">dr. inż. Marian Kowalski</string>
+    <string name="text_subject_status_text">Dostępny</string>
+    <string name="text_creator_title_text">Realizujący:</string>
+    <string name="text_taken_places_text">0/1</string>
+    <string name="text_creators_text">text_creators_text</string>
+    <string name="btn_choose_text">Wybierz</string>
+
+    <!--menu_subject_list-->
+    <string name="item_search_title">Szukaj</string>
+    <string name="item_hide_taken_title">Ukryj zajęte</string>
+
+
 </resources>
