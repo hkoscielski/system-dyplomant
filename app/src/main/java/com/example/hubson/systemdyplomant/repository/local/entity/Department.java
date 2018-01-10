@@ -4,12 +4,12 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(tableName = "Statusy_Tematu")
-public class StatusTematu {
+@Entity(tableName = "Departments")
+public class Department {
     @PrimaryKey
-    @ColumnInfo(name = "id_statusu_tem")
-    private int idStatusuTem;
+    @ColumnInfo(name = "id_department")
+    private int idDepartment;
 
-    @ColumnInfo(name = "nazwa_statusu")
-    private String nazwaStatusu;
+    @ColumnInfo(name = "department_name")
+    private int departmentName;
 }

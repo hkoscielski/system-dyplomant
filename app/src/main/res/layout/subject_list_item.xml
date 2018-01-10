@@ -73,18 +73,18 @@
                 android:text="@string/text_creator_title_text"/>
 
             <TextView
-                android:id="@+id/text_taken_places"
+                android:id="@+id/text_taken_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/text_subject_status"
                 android:layout_toEndOf="@+id/text_creator_title"
-                android:text="@string/text_taken_places_text" />
+                android:text="@string/text_taken_up_text" />
 
             <TextView
                 android:id="@+id/text_creators"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/text_taken_places"
+                android:layout_below="@id/text_taken_up"
                 android:text="@string/text_creators_text"/>
 
         </RelativeLayout>
