@@ -12,4 +12,20 @@ public class SubjectStatus {
 
     @ColumnInfo(name = "status_name")
     private String statusName;
+
+    public int getIdSubjectStatuses() {
+        return idSubjectStatuses;
+    }
+
+    public void setIdSubjectStatuses(int idSubjectStatuses) {
+        this.idSubjectStatuses = idSubjectStatuses;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
 }

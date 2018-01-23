@@ -11,5 +11,21 @@ public class FormOfStudies {
     private int idForm;
 
     @ColumnInfo(name = "form_name")
-    private int formName;
+    private String formName;
+
+    public int getIdForm() {
+        return idForm;
+    }
+
+    public void setIdForm(int idForm) {
+        this.idForm = idForm;
+    }
+
+    public String getFormName() {
+        return formName;
+    }
+
+    public void setFormName(String formName) {
+        this.formName = formName;
+    }
 }
