@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.hubson.systemdyplomant.view.declaration.DeclarationActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/text_graduate_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text_graduate_label_text"/>
+
+            <EditText
+                android:id="@+id/et_graduate_names"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_graduate_label"
+                android:enabled="false"
+                android:text="@string/et_graduate_names_text"/>
+
+            <EditText
+                android:id="@+id/et_student_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_graduate_names"
+                android:enabled="false"
+                android:text="@string/et_student_no_text"/>
+
+            <EditText
+                android:id="@+id/et_speciality"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_student_no"
+                android:enabled="false"
+                android:text="@string/et_speciality"/>
+
+            <View android:id="@+id/view_fake"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true"/>
+
+            <EditText
+                android:id="@+id/et_form"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_speciality"
+                android:layout_alignEnd="@id/view_fake"
+                android:layout_alignParentStart="true"
+                android:enabled="false"
+                android:text="@string/et_form"/>
+
+            <EditText
+                android:id="@+id/et_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_speciality"
+                android:layout_alignStart="@id/view_fake"
+                android:layout_alignParentEnd="true"
+                android:enabled="false"
+                android:text="@string/et_speciality"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/text_declaration_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text_declaration_label_text"/>
+
+            <EditText
+                android:id="@+id/et_subject_pl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_declaration_label"
+                android:enabled="false"
+                android:text="@string/et_subject_pl_text"/>
+
+            <EditText
+                android:id="@+id/et_subject_en"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_subject_pl"
+                android:enabled="false"
+                android:text="@string/et_subject_en_text"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_language"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_subject_en">
+
+                <EditText
+                    android:id="@+id/et_language"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/et_language_hint"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <EditText
+                android:id="@+id/et_supervisor_names"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/input_layout_language"
+                android:enabled="false"
+                android:text="@string/et_supervisor_names_text"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_purpose_range"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_supervisor_names">
+
+                <EditText
+                    android:id="@+id/et_purpose_range"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/et_purpose_range_hint"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_short_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/input_layout_purpose_range">
+
+                <EditText
+                    android:id="@+id/et_short_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/et_short_desc_hint"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+</ScrollView>

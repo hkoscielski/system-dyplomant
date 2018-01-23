@@ -12,9 +12,26 @@
     <string name="text_creators_text">text_creators_text</string>
     <string name="btn_choose_text">Wybierz</string>
 
+    <!--activity_declaration-->
+    <string name="text_graduate_label_text">Dane dyplomanta</string>
+    <string name="et_graduate_names_text">et_graduate_names_text</string>
+    <string name="et_student_no_text">et_student_no_text</string>
+    <string name="et_speciality">et_speciality</string>
+    <string name="et_form">et_form</string>
+
+    <string name="text_declaration_label_text">Deklaracja realizacji pracy inżynierskiej</string>
+    <string name="et_subject_pl_text">et_subject_pl_text</string>
+    <string name="et_subject_en_text">et_subject_en_text</string>
+    <string name="et_language_hint">Język realizacji pracy</string>
+    <string name="et_supervisor_names_text">et_supervisor_names_text</string>
+    <string name="et_purpose_range_hint">Cel i zakres pracy</string>
+    <string name="et_short_desc_hint">Krótki opis pracy</string>
+
+
     <!--menu_subject_list-->
     <string name="item_search_title">Szukaj</string>
     <string name="item_hide_taken_title">Ukryj zajęte</string>
 
-
+    <!--menu_declaration-->
+    <string name="item_send_title">Udostępnij</string>
 </resources>
