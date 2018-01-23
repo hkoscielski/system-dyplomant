@@ -30,9 +30,6 @@ public class Declaration {
     @ColumnInfo(name = "id_subject")
     private int idSubject;
 
-    @ColumnInfo(name = "id_supervisor")
-    private int idSupervisor;
-
     @ColumnInfo(name = "id_graduate")
     private int idGraduate;
 
@@ -68,14 +65,6 @@ public class Declaration {
 
     public void setIdSubject(int idSubject) {
         this.idSubject = idSubject;
-    }
-
-    public int getIdSupervisor() {
-        return idSupervisor;
-    }
-
-    public void setIdSupervisor(int idSupervisor) {
-        this.idSupervisor = idSupervisor;
     }
 
     public int getIdGraduate() {
