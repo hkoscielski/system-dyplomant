@@ -1,5 +1,6 @@
 package com.example.hubson.systemdyplomant.repository.local.dao;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -12,11 +13,17 @@ import java.util.List;
 
 @Dao
 public interface SubjectDao {
+    @Query("SELECT * FROM Subjects")
+    public LiveData<List<Subject>> loadAllSubjects();
+
     @Query("SELECT * FROM Subjects WHERE id_subject=:idSubject")
     public Subject findSubjectById(final int idSubject);
 
     @Query("SELECT * FROM Subjects WHERE id_subject=:idSupervisor")
     public List<Subject> findSubjectsForSupervisor(final int idSupervisor);
+
+    @Insert
+    public void insertAll(List<Subject> subjects);
 
     @Insert
     public void insert(Subject subject);

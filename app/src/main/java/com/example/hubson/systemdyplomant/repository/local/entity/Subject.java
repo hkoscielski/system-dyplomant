@@ -9,14 +9,15 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "Subjects", foreignKeys = {
-        @ForeignKey(entity = Supervisor.class,
-                    parentColumns = "id_supervisor",
-                    childColumns = "id_supervisor"),
-        @ForeignKey(entity = SubjectStatus.class,
-                    parentColumns = "id_subject_status",
-                    childColumns = "id_subject_status")
-})
+@Entity(tableName = "Subjects"//, foreignKeys = {
+//        @ForeignKey(entity = Supervisor.class,
+//                    parentColumns = "id_supervisor",
+//                    childColumns = "id_supervisor"),
+//        @ForeignKey(entity = SubjectStatus.class,
+//                    parentColumns = "id_subject_status",
+//                    childColumns = "id_subject_status")
+//})
+)
 public class Subject {
     @SerializedName("id_subject")
     @PrimaryKey
@@ -121,5 +122,18 @@ public class Subject {
 
     public void setIdSubjectStatus(@NonNull Integer idSubjectStatus) {
         this.idSubjectStatus = idSubjectStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "idSubject=" + idSubject +
+                ", idSupervisor=" + idSupervisor +
+                ", subjectPl='" + subjectPl + '\'' +
+                ", subjectEn='" + subjectEn + '\'' +
+                ", takenUp=" + takenUp +
+                ", limit=" + limit +
+                ", idSubjectStatus=" + idSubjectStatus +
+                '}' + "\n\n";
     }
 }
