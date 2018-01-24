@@ -4,17 +4,29 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverter;
+import android.support.annotation.NonNull;
 
 import com.example.hubson.systemdyplomant.repository.local.converters.DateConverters;
+import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "Departments")
 public class Department {
+    @SerializedName("id_department")
     @PrimaryKey
     @ColumnInfo(name = "id_department")
     private int idDepartment;
 
+    @SerializedName("department_name")
+    @NonNull
     @ColumnInfo(name = "department_name")
-    private int departmentName;
+    private String departmentName;
+
+    public Department() {}
+
+    public Department(int idDepartment, @NonNull String departmentName) {
+        this.idDepartment = idDepartment;
+        this.departmentName = departmentName;
+    }
 
     public int getIdDepartment() {
         return idDepartment;
@@ -24,11 +36,12 @@ public class Department {
         this.idDepartment = idDepartment;
     }
 
-    public int getDepartmentName() {
+    @NonNull
+    public String getDepartmentName() {
         return departmentName;
     }
 
-    public void setDepartmentName(int departmentName) {
+    public void setDepartmentName(@NonNull String departmentName) {
         this.departmentName = departmentName;
     }
 }

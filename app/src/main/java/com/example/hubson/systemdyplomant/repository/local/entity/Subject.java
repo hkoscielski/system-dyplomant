@@ -4,6 +4,10 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+
+import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "Subjects", foreignKeys = {
         @ForeignKey(entity = Supervisor.class,
@@ -14,27 +18,51 @@ import android.arch.persistence.room.PrimaryKey;
                     childColumns = "id_subject_status")
 })
 public class Subject {
+    @SerializedName("id_subject")
     @PrimaryKey
     @ColumnInfo(name = "id_subject")
     private int idSubject;
 
+    @SerializedName("id_supervisor")
     @ColumnInfo(name = "id_supervisor")
     private int idSupervisor;
 
+    @SerializedName("subject_pl")
+    @NonNull
     @ColumnInfo(name = "subject_pl")
     private String subjectPl;
 
+    @SerializedName("subject_en")
+    @NonNull
     @ColumnInfo(name = "subject_en")
     private String subjectEn;
 
+    @SerializedName("taken_up")
+    @IntRange(from = 0)
     @ColumnInfo(name = "taken_up")
     private int takenUp;
 
+    @SerializedName("graduates_limit")
+    @IntRange(from = 0)
     @ColumnInfo(name = "limit")
     private int limit;
 
+    @SerializedName("id_subject_status")
+    @NonNull
     @ColumnInfo(name = "id_subject_status")
-    private int idSubjectStatus;
+    private Integer idSubjectStatus;
+
+    public Subject() {}
+
+    public Subject(int idSubject, int idSupervisor, @NonNull String subjectPl, @NonNull String subjectEn, int takenUp, int limit, @NonNull Integer idSubjectStatus) {
+        this.idSubject = idSubject;
+        this.idSupervisor = idSupervisor;
+        this.subjectPl = subjectPl;
+        this.subjectEn = subjectEn;
+        this.takenUp = takenUp;
+        this.limit = limit;
+        this.idSubjectStatus = idSubjectStatus;
+    }
 
     public int getIdSubject() {
         return idSubject;
@@ -52,19 +80,21 @@ public class Subject {
         this.idSupervisor = idSupervisor;
     }
 
+    @NonNull
     public String getSubjectPl() {
         return subjectPl;
     }
 
-    public void setSubjectPl(String subjectPl) {
+    public void setSubjectPl(@NonNull String subjectPl) {
         this.subjectPl = subjectPl;
     }
 
+    @NonNull
     public String getSubjectEn() {
         return subjectEn;
     }
 
-    public void setSubjectEn(String subjectEn) {
+    public void setSubjectEn(@NonNull String subjectEn) {
         this.subjectEn = subjectEn;
     }
 
@@ -84,11 +114,12 @@ public class Subject {
         this.limit = limit;
     }
 
-    public int getIdSubjectStatus() {
+    @NonNull
+    public Integer getIdSubjectStatus() {
         return idSubjectStatus;
     }
 
-    public void setIdSubjectStatus(int idSubjectStatus) {
+    public void setIdSubjectStatus(@NonNull Integer idSubjectStatus) {
         this.idSubjectStatus = idSubjectStatus;
     }
 }

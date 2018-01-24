@@ -10,7 +10,6 @@ import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
 
 import java.util.List;
 
-
 @Dao
 public interface GraduateDao {
     @Query("SELECT * FROM Graduates WHERE id_graduate=:idGraduate")
