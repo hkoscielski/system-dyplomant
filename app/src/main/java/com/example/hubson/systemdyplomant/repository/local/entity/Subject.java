@@ -3,6 +3,7 @@ package com.example.hubson.systemdyplomant.repository.local.entity;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -52,6 +53,9 @@ public class Subject {
     @NonNull
     @ColumnInfo(name = "id_subject_status")
     private Integer idSubjectStatus;
+
+    @Ignore
+    private SubjectStatus subjectStatus;
 
     public Subject() {}
 
@@ -135,5 +139,13 @@ public class Subject {
                 ", limit=" + limit +
                 ", idSubjectStatus=" + idSubjectStatus +
                 '}' + "\n\n";
+    }
+
+    public SubjectStatus getSubjectStatus() {
+        return subjectStatus;
+    }
+
+    public void setSubjectStatus(SubjectStatus subjectStatus) {
+        this.subjectStatus = subjectStatus;
     }
 }

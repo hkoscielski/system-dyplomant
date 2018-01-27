@@ -33,11 +33,17 @@ public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.
         Subject subject = subjects.get(position);
         holder.textSubject.setText(subject.getSubjectPl());
         holder.textTakenUp.setText(subject.getTakenUp() + "/" + subject.getLimit());
+        holder.textSubjectStatus.setText(subject.getSubjectStatus().getStatusName());
     }
 
     @Override
     public int getItemCount() {
         return subjects.size();
+    }
+
+    public void setData(List<Subject> subjects) {
+        this.subjects = subjects;
+        notifyDataSetChanged();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

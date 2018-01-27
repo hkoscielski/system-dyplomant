@@ -1,5 +1,6 @@
 package com.example.hubson.systemdyplomant.repository.local.dao;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -8,17 +9,28 @@ import android.arch.persistence.room.Update;
 
 import com.example.hubson.systemdyplomant.repository.local.entity.SubjectStatus;
 
+import java.util.List;
+
 @Dao
 public interface SubjectStatusDao {
+    @Query("SELECT * FROM Subject_Statuses")
+    LiveData<List<SubjectStatus>> loadAllStatuses();
+
+    @Query("SELECT * FROM Subject_Statuses WHERE id_subject_status=:idSubjectStatus")
+    LiveData<SubjectStatus> loadStatusById(int idSubjectStatus);
+
     @Query("SELECT * FROM Subject_Statuses WHERE status_name=:statusName")
-    public SubjectStatus findStatusByName(String statusName);
+    LiveData<SubjectStatus> loadStatusByName(String statusName);
 
     @Insert
-    public void insert(SubjectStatus subjectStatus);
+    void insertAll(List<SubjectStatus> subjectStatuses);
+
+    @Insert
+    void insert(SubjectStatus subjectStatus);
 
     @Update
-    public void update(SubjectStatus subjectStatus);
+    void update(SubjectStatus subjectStatus);
 
     @Delete
-    public void delete(SubjectStatus subjectStatus);
+    void delete(SubjectStatus subjectStatus);
 }

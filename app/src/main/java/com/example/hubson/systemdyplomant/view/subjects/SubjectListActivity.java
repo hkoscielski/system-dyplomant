@@ -10,15 +10,24 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.hubson.systemdyplomant.R;
+import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.viewmodel.SubjectListViewModel;
 
+import java.util.Collections;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SubjectListActivity extends AppCompatActivity {
+    @BindView(R.id.subject_list)
+    RecyclerView subjectRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_list);
-        RecyclerView subjectRecyclerView = (RecyclerView) findViewById(R.id.subject_list);
+        ButterKnife.bind(this);
         subjectRecyclerView.setHasFixedSize(true);
         SubjectListViewModel subjectListViewModel = ViewModelProviders.of(this).get(SubjectListViewModel.class);
         subjectListViewModel.getSubjects().observe(this, subjects -> {
