@@ -33,7 +33,7 @@ public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.
         Subject subject = subjects.get(position);
         holder.textSubject.setText(subject.getSubjectPl());
         holder.textTakenUp.setText(subject.getTakenUp() + "/" + subject.getLimit());
-        holder.textSubjectStatus.setText(subject.getSubjectStatus().getStatusName());
+//        holder.textSubjectStatus.setText(subject.getSubjectStatus().getStatusName());
     }
 
     @Override

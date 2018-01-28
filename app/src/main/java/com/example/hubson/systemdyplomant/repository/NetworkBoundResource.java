@@ -2,22 +2,24 @@ package com.example.hubson.systemdyplomant.repository;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
-import android.os.AsyncTask;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
+import com.example.hubson.systemdyplomant.utils.AppExecutors;
+
+import java.util.Objects;
 
 public abstract class NetworkBoundResource<ResultType, RequestType> {
+    private final AppExecutors appExecutors;
     private final MediatorLiveData<Resource<ResultType>> result = new MediatorLiveData<>();
 
     @MainThread
-    NetworkBoundResource() {
+    NetworkBoundResource(AppExecutors appExecutors) {
+        this.appExecutors = appExecutors;
         result.setValue(Resource.loading(null));
         LiveData<ResultType> dbSource = loadFromDb();
         result.addSource(dbSource, data -> {
@@ -25,46 +27,41 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
             if (shouldFetch(data)) {
                 fetchFromNetwork(dbSource);
             } else {
-                result.addSource(dbSource, newData -> result.setValue(Resource.success(newData)));
-            }
-        });
-    }
-
-    private void fetchFromNetwork(final LiveData<ResultType> dbSource) {
-        result.addSource(dbSource, newData -> result.setValue(Resource.loading(newData)));
-        createCall().enqueue(new Callback<RequestType>() {
-            @Override
-            public void onResponse(Call<RequestType> call, Response<RequestType> response) {
-                result.removeSource(dbSource);
-                saveResultAndReInit(response.body());
-                Log.i("onResponse", "OK");
-            }
-
-            @Override
-            public void onFailure(Call<RequestType> call, Throwable t) {
-                onFetchFailed();
-                result.removeSource(dbSource);
-                result.addSource(dbSource, newData -> result.setValue(Resource.error(t.getMessage(), newData)));
-                Log.e("onFailure", t.getMessage());
+                result.addSource(dbSource, newData -> setValue(Resource.success(newData)));
             }
         });
     }
 
     @MainThread
-    private void saveResultAndReInit(RequestType response) {
-        new AsyncTask<Void, Void, Void>() {
+    private void setValue(Resource<ResultType> newValue) {
+        if (!Objects.equals(result.getValue(), newValue)) {
+            result.setValue(newValue);
+        }
+    }
 
-            @Override
-            protected Void doInBackground(Void... voids) {
-                saveCallResult(response);
-                return null;
+    private void fetchFromNetwork(final LiveData<ResultType> dbSource) {
+        LiveData<ApiResponse<RequestType>> apiResponse = createCall();
+        // we re-attach dbSource as a new source, it will dispatch its latest value quickly
+        result.addSource(dbSource, newData -> setValue(Resource.loading(newData)));
+        result.addSource(apiResponse, response -> {
+            result.removeSource(apiResponse);
+            result.removeSource(dbSource);
+            if (response.isSuccessful()) {
+                appExecutors.diskIO().execute(() -> {
+                    saveCallResult(processResponse(response));
+                    appExecutors.mainThread().execute(() -> {
+                        // we specially request a new live data,
+                        // otherwise we will get immediately last cached value,
+                        // which may not be updated with latest results received from network.
+                        result.addSource(loadFromDb(), newData -> setValue(Resource.success(newData)));
+                        Log.i("Fetch", "OK");
+                    });
+                });
+            } else {
+                onFetchFailed();
+                result.addSource(dbSource, newData -> setValue(Resource.error(response.errorMessage, newData)));
             }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                result.addSource(loadFromDb(), newData -> result.setValue(Resource.success(newData)));
-            }
-        }.execute();
+        });
     }
 
     @WorkerThread
@@ -72,7 +69,12 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
 
     @MainThread
     protected boolean shouldFetch(@Nullable ResultType data) {
-        return true;
+        return data == null;
+    }
+
+    @WorkerThread
+    protected RequestType processResponse(ApiResponse<RequestType> response) {
+        return response.body;
     }
 
     @NonNull
@@ -81,7 +83,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
 
     @NonNull
     @MainThread
-    protected abstract Call<RequestType> createCall();
+    protected abstract LiveData<ApiResponse<RequestType>> createCall();
 
     @MainThread
     protected void onFetchFailed() {
