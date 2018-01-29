@@ -2,6 +2,7 @@ package com.example.hubson.systemdyplomant.view.subjects;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 
 import com.example.hubson.systemdyplomant.R;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoined;
+import com.example.hubson.systemdyplomant.view.declaration.DeclarationActivity;
 import com.example.hubson.systemdyplomant.viewmodel.SubjectListViewModel;
 
 import butterknife.BindView;
@@ -75,7 +77,8 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
                 .setMessage("Czy na pewno chcesz wybrać ten temat do realizacji")
                 .setCancelable(false)
                 .setPositiveButton("Tak", (dialog, which) -> {
-
+                    Intent intent = new Intent(this, DeclarationActivity.class);
+                    startActivity(intent);
                 })
                 .setNegativeButton("Nie", (dialog, which) -> {
 

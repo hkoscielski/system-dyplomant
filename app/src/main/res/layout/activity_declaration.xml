@@ -19,13 +19,26 @@
                 android:id="@+id/text_graduate_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_graduate_label_text"/>
+                android:layout_marginEnd="7dp"
+                android:layout_marginStart="7dp"
+                android:text="@string/text_graduate_label_text"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"/>
+
+            <View
+                android:id="@+id/separator_graduate_label"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@id/text_graduate_label"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:background="@color/colorAccent"/>
 
             <EditText
                 android:id="@+id/et_graduate_names"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/text_graduate_label"
+                android:layout_below="@id/separator_graduate_label"
                 android:enabled="false"
                 android:text="@string/et_graduate_names_text"/>
 
@@ -80,13 +93,26 @@
                 android:id="@+id/text_declaration_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_declaration_label_text"/>
+                android:layout_marginEnd="7dp"
+                android:layout_marginStart="7dp"
+                android:text="@string/text_declaration_label_text"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"/>
+
+            <View
+                android:id="@+id/separator_declaration_label"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@id/text_declaration_label"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:background="@color/colorAccent"/>
 
             <EditText
                 android:id="@+id/et_subject_pl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/text_declaration_label"
+                android:layout_below="@id/separator_declaration_label"
                 android:enabled="false"
                 android:text="@string/et_subject_pl_text"/>
 
