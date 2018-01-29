@@ -24,10 +24,10 @@ public interface SubjectStatusDao {
     @Query("SELECT * FROM Subject_Statuses WHERE status_name=:statusName")
     LiveData<SubjectStatus> loadStatusByName(String statusName);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<SubjectStatus> subjectStatuses);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(SubjectStatus subjectStatus);
 
     @Update

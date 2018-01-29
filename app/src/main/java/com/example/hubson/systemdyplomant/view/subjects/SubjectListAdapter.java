@@ -1,6 +1,5 @@
 package com.example.hubson.systemdyplomant.view.subjects;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,8 @@ import android.widget.TextView;
 
 import com.example.hubson.systemdyplomant.R;
 import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
+import com.example.hubson.systemdyplomant.repository.local.entity.SubjectStatus;
+import com.example.hubson.systemdyplomant.repository.local.entity.Supervisor;
 
 import java.util.List;
 
@@ -30,10 +31,13 @@ public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.
 
     @Override
     public void onBindViewHolder(SubjectListAdapter.ViewHolder holder, int position) {
-        Subject subject = subjects.get(position);
-        holder.textSubject.setText(subject.getSubjectPl());
-        holder.textTakenUp.setText(subject.getTakenUp() + "/" + subject.getLimit());
-        holder.textSubjectStatus.setText(subject.getSubjectStatus() != null ? subject.getSubjectStatus().getStatusName() : "Lipa");
+        Subject subjectJoined = subjects.get(position);
+        SubjectStatus subjectStatus = subjectJoined.getSubjectStatus();
+        Supervisor supervisor = subjectJoined.getSupervisor();
+
+        holder.textSubject.setText(subjectJoined.getSubjectPl());
+        holder.textTakenUp.setText(subjectJoined.getTakenUp() + "/" + subjectJoined.getLimit());
+        holder.textSubjectStatus.setText(subjectStatus != null ? subjectStatus.getStatusName() : "nie udało sie");
     }
 
     @Override

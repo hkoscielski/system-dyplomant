@@ -29,6 +29,10 @@ public class Subject {
     @ColumnInfo(name = "id_supervisor")
     private int idSupervisor;
 
+    @SerializedName("supervisor")
+    @Ignore
+    private Supervisor supervisor;
+
     @SerializedName("subject_pl")
     @NonNull
     @ColumnInfo(name = "subject_pl")
@@ -54,6 +58,7 @@ public class Subject {
     @ColumnInfo(name = "id_subject_status")
     private Integer idSubjectStatus;
 
+    @SerializedName("subject_status")
     @Ignore
     private SubjectStatus subjectStatus;
 
@@ -83,6 +88,14 @@ public class Subject {
 
     public void setIdSupervisor(int idSupervisor) {
         this.idSupervisor = idSupervisor;
+    }
+
+    public Supervisor getSupervisor() {
+        return supervisor;
+    }
+
+    public void setSupervisor(Supervisor supervisor) {
+        this.supervisor = supervisor;
     }
 
     @NonNull

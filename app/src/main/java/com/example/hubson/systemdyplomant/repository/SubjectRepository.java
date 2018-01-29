@@ -7,8 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.hubson.systemdyplomant.repository.local.db_helper.SubjectDbHelper;
+import com.example.hubson.systemdyplomant.repository.local.dao.SupervisorDao;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
+import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoinedResponse;
 import com.example.hubson.systemdyplomant.utils.AppExecutors;
 import com.example.hubson.systemdyplomant.repository.local.AppDatabase;
 import com.example.hubson.systemdyplomant.repository.local.dao.SubjectDao;
@@ -29,10 +30,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SubjectRepository {
     private final SubjectDao subjectDao;
     private final SubjectStatusDao subjectStatusDao;
+    private final SupervisorDao supervisorDao;
     private final Webservice webservice;
     private final AppDatabase db;
     private final AppExecutors appExecutors;
-    private final SubjectDbHelper subjectDbHelper;
+    //private final SubjectDbHelper subjectDbHelper;
 
     //    public SubjectRepository(SubjectDao subjectDao, Webservice webservice) {
 //        this.subjectDao = subjectDao;
@@ -42,6 +44,7 @@ public class SubjectRepository {
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).build();
         subjectDao = db.getSubjectDao();
         subjectStatusDao = db.getSubjectStatusDao();
+        supervisorDao = db.getSupervisorDao();
         webservice = new Retrofit.Builder()
                 .baseUrl(ApiConstants.HTTP_GRADUATE_API)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -49,7 +52,7 @@ public class SubjectRepository {
                 .build().create(Webservice.class);
         appExecutors = new AppExecutors();
 //        loadAllSubjectStatuses();
-        subjectDbHelper = new SubjectDbHelper(subjectDao, subjectStatusDao);
+        //subjectDbHelper = new SubjectDbHelper(subjectDao, subjectStatusDao);
     }
 
     public LiveData<Resource<List<Subject>>> loadAllSubjects() {
@@ -71,7 +74,7 @@ public class SubjectRepository {
             @Override
             protected LiveData<List<Subject>> loadFromDb() {
                 Log.e("loadFromDb", "Działaj kurwa");
-                return subjectDbHelper.loadAllSubjects();
+                return subjectDao.loadAllSubjects();
             }
 
             @Override
@@ -83,6 +86,37 @@ public class SubjectRepository {
             @Override
             protected LiveData<ApiResponse<SubjectResponse>> createCall() {
                 return webservice.getSubjects();
+            }
+        }.getAsLiveData();
+    }
+
+    public LiveData<Resource<List<Subject>>> loadAllSubjectJoined() {
+        return new NetworkBoundResource<List<Subject>, SubjectJoinedResponse>(appExecutors) {
+            @Override
+            protected void saveCallResult(@NonNull SubjectJoinedResponse item) {
+                List<Subject> subjectsJoined = item.getResults();
+                for(Subject subjectJoined : subjectsJoined) {
+                    subjectDao.insert(subjectJoined);
+                    subjectStatusDao.insert(subjectJoined.getSubjectStatus());
+                    supervisorDao.insert(subjectJoined.getSupervisor());
+                }
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<List<Subject>> loadFromDb() {
+                return subjectDao.loadAllSubjectsJoined();
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable List<Subject> data) {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<SubjectJoinedResponse>> createCall() {
+                return webservice.getSubjectsJoined();
             }
         }.getAsLiveData();
     }

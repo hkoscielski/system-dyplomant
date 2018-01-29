@@ -36,7 +36,7 @@ public class SubjectListActivity extends AppCompatActivity {
         subjectRecyclerView.setAdapter(new SubjectListAdapter(new ArrayList<>()));
         subjectRecyclerView.setHasFixedSize(true);
         SubjectListViewModel subjectListViewModel = ViewModelProviders.of(this).get(SubjectListViewModel.class);
-        subjectListViewModel.getSubjects().observe(this, subjects -> {
+        subjectListViewModel.getSubjectsJoined().observe(this, subjects -> {
             if (subjects != null && subjects.data != null) {
                 if (subjectRecyclerView.getAdapter() != null && subjectRecyclerView.getAdapter() instanceof SubjectListAdapter) {
                     ((SubjectListAdapter) subjectRecyclerView.getAdapter()).setData(subjects.data);

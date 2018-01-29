@@ -7,6 +7,7 @@ import com.example.hubson.systemdyplomant.repository.local.dao.FormOfStudiesDao;
 import com.example.hubson.systemdyplomant.repository.local.dao.GraduateDao;
 import com.example.hubson.systemdyplomant.repository.local.dao.SubjectDao;
 import com.example.hubson.systemdyplomant.repository.local.dao.SubjectStatusDao;
+import com.example.hubson.systemdyplomant.repository.local.dao.SupervisorDao;
 import com.example.hubson.systemdyplomant.repository.local.entity.*;
 
 @Database(entities = {Declaration.class, DeclarationStatus.class, Department.class, FormOfStudies.class,
@@ -16,4 +17,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract FormOfStudiesDao getFormOfStudiesDao();
     public abstract SubjectDao getSubjectDao();
     public abstract SubjectStatusDao getSubjectStatusDao();
+    public abstract SupervisorDao getSupervisorDao();
 }

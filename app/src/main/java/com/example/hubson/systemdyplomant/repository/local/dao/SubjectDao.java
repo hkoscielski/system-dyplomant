@@ -17,6 +17,12 @@ public interface SubjectDao {
     @Query("SELECT * FROM Subjects")
     LiveData<List<Subject>> loadAllSubjects();
 
+    @Query("SELECT S.*, SS.*, SV.* " +
+            "FROM Subjects S " +
+            "JOIN Subject_Statuses SS ON S.id_subject_status = SS.id_subject_status " +
+            "JOIN Supervisors SV ON S.id_supervisor = SV.id_supervisor")
+    LiveData<List<Subject>> loadAllSubjectsJoined();
+
     @Query("SELECT * FROM Subjects WHERE id_subject=:idSubject")
     LiveData<Subject> loadSubjectById(final int idSubject);
 
