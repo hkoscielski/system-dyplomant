@@ -1,18 +1,23 @@
 package com.example.hubson.systemdyplomant.view.subjects;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.hubson.systemdyplomant.R;
+import com.example.hubson.systemdyplomant.repository.Resource;
 import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.viewmodel.SubjectListViewModel;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,11 +33,15 @@ public class SubjectListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_list);
         ButterKnife.bind(this);
+        subjectRecyclerView.setAdapter(new SubjectListAdapter(new ArrayList<>()));
         subjectRecyclerView.setHasFixedSize(true);
         SubjectListViewModel subjectListViewModel = ViewModelProviders.of(this).get(SubjectListViewModel.class);
         subjectListViewModel.getSubjects().observe(this, subjects -> {
-            if(subjects != null && subjects.data != null)
-                subjectRecyclerView.setAdapter(new SubjectListAdapter(subjects.data));
+            if (subjects != null && subjects.data != null) {
+                if (subjectRecyclerView.getAdapter() != null && subjectRecyclerView.getAdapter() instanceof SubjectListAdapter) {
+                    ((SubjectListAdapter) subjectRecyclerView.getAdapter()).setData(subjects.data);
+                }
+            }
         });
     }
 

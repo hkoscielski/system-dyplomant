@@ -10,8 +10,8 @@ import android.util.Log;
 
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
 import com.example.hubson.systemdyplomant.utils.AppExecutors;
+import com.example.hubson.systemdyplomant.utils.Objects;
 
-import java.util.Objects;
 
 public abstract class NetworkBoundResource<ResultType, RequestType> {
     private final AppExecutors appExecutors;
@@ -19,14 +19,18 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
 
     @MainThread
     NetworkBoundResource(AppExecutors appExecutors) {
+        Log.i("NetworkBoundResource", "konstruktor");
         this.appExecutors = appExecutors;
         result.setValue(Resource.loading(null));
         LiveData<ResultType> dbSource = loadFromDb();
         result.addSource(dbSource, data -> {
             result.removeSource(dbSource);
+            Log.i("removeSource", "shouldFetch");
             if (shouldFetch(data)) {
+                Log.i("NetworkBoundResource", "pobieramy");
                 fetchFromNetwork(dbSource);
             } else {
+                Log.i("NetworkBoundResource", "nie pobieramy");
                 result.addSource(dbSource, newData -> setValue(Resource.success(newData)));
             }
         });

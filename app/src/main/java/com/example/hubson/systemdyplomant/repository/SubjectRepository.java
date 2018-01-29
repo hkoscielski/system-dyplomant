@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.hubson.systemdyplomant.repository.local.db_helper.SubjectDbHelper;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
 import com.example.hubson.systemdyplomant.utils.AppExecutors;
 import com.example.hubson.systemdyplomant.repository.local.AppDatabase;
@@ -30,10 +31,10 @@ public class SubjectRepository {
     private final SubjectStatusDao subjectStatusDao;
     private final Webservice webservice;
     private final AppDatabase db;
-    //private final SubjectDbHelper subjectDbHelper;
     private final AppExecutors appExecutors;
+    private final SubjectDbHelper subjectDbHelper;
 
-//    public SubjectRepository(SubjectDao subjectDao, Webservice webservice) {
+    //    public SubjectRepository(SubjectDao subjectDao, Webservice webservice) {
 //        this.subjectDao = subjectDao;
 //        this.webservice = webservice;
 //    }
@@ -46,9 +47,9 @@ public class SubjectRepository {
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(new LiveDataCallAdapterFactory())
                 .build().create(Webservice.class);
-        //loadAllSubjectStatuses();
-        //subjectDbHelper = new SubjectDbHelper(subjectDao, subjectStatusDao);
         appExecutors = new AppExecutors();
+//        loadAllSubjectStatuses();
+        subjectDbHelper = new SubjectDbHelper(subjectDao, subjectStatusDao);
     }
 
     public LiveData<Resource<List<Subject>>> loadAllSubjects() {
@@ -56,18 +57,21 @@ public class SubjectRepository {
 
             @Override
             protected void saveCallResult(@NonNull SubjectResponse item) {
+                Log.e("saveCallResult", "Działaj kurwa");
+                subjectDao.deleteAll();
                 subjectDao.insertAll(item.getResults());
             }
 
             @Override
             protected boolean shouldFetch(@Nullable List<Subject> data) {
-                return data == null || data.isEmpty();
+                return true;
             }
 
             @NonNull
             @Override
             protected LiveData<List<Subject>> loadFromDb() {
-                return subjectDao.loadAllSubjects();
+                Log.e("loadFromDb", "Działaj kurwa");
+                return subjectDbHelper.loadAllSubjects();
             }
 
             @Override
@@ -87,13 +91,21 @@ public class SubjectRepository {
         return new NetworkBoundResource<List<SubjectStatus>, SubjectStatusResponse>(appExecutors) {
             @Override
             protected void saveCallResult(@NonNull SubjectStatusResponse item) {
+                Log.e("saveCallResult_allSS", "Działaj kurwa");
+                subjectStatusDao.deleteAll();
                 subjectStatusDao.insertAll(item.getResults());
             }
 
             @NonNull
             @Override
             protected LiveData<List<SubjectStatus>> loadFromDb() {
+                Log.e("loadFromDb_allSS", "Działaj kurwa");
                 return subjectStatusDao.loadAllStatuses();
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable List<SubjectStatus> data) {
+                return true;
             }
 
             @Override

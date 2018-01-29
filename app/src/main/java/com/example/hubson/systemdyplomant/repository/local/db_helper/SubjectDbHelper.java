@@ -1,5 +1,6 @@
 package com.example.hubson.systemdyplomant.repository.local.db_helper;
 
+import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.Observer;
@@ -25,18 +26,28 @@ public class SubjectDbHelper {
 
     public LiveData<List<Subject>> loadAllSubjects() {
         LiveData<List<Subject>> subjectsLiveData = subjectDao.loadAllSubjects();
-        subjectsLiveData = Transformations.switchMap(subjectsLiveData, inputSubjects -> {
-            MediatorLiveData<List<Subject>> subjectsMediatorLiveData = new MediatorLiveData<>();
-            for (Subject subject : inputSubjects) {
-                subjectsMediatorLiveData.addSource(subjectStatusDao.loadStatusById(subject.getIdSubjectStatus()), subjectStatus -> {
-                    subject.setSubjectStatus(subjectStatus);
-                    Log.i("Subject", subject.getSubjectPl());
-                    Log.i("Status", subjectStatus != null ? subjectStatus.getStatusName() : "null");
-                    subjectsMediatorLiveData.postValue(inputSubjects);
-                });
+        subjectsLiveData = Transformations.switchMap(subjectsLiveData, new Function<List<Subject>, LiveData<List<Subject>>>() {
+            @Override
+            public LiveData<List<Subject>> apply(List<Subject> input) {
+                MediatorLiveData<List<Subject>> subjectsMediatorLiveData = new MediatorLiveData<>();
+                for(Subject subject : input) {
+                    subjectsMediatorLiveData.addSource(subjectStatusDao.loadStatusById(subject.getIdSubjectStatus()), new Observer<SubjectStatus>() {
+                        @Override
+                        public void onChanged(@Nullable SubjectStatus subjectStatus) {
+                            subject.setSubjectStatus(subjectStatus);
+                            subjectsMediatorLiveData.postValue(input);
+                        }
+                    });
+                }
+                return subjectsMediatorLiveData;
             }
-            return subjectsMediatorLiveData;
         });
+//        subjectsLiveData = Transformations.map(subjectsLiveData, inputSubjects -> {
+//            for(Subject subject : inputSubjects) {
+//                subject.setSubjectStatus(subjectStatusDao.loadStatusById(subject.getIdSubjectStatus()).getValue());
+//            }
+//            return inputSubjects;
+//        });
         return subjectsLiveData;
     }
 }

@@ -3,7 +3,9 @@ package com.example.hubson.systemdyplomant.repository.local.dao;
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
@@ -22,7 +24,7 @@ public interface SubjectStatusDao {
     @Query("SELECT * FROM Subject_Statuses WHERE status_name=:statusName")
     LiveData<SubjectStatus> loadStatusByName(String statusName);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(List<SubjectStatus> subjectStatuses);
 
     @Insert
@@ -33,4 +35,7 @@ public interface SubjectStatusDao {
 
     @Delete
     void delete(SubjectStatus subjectStatus);
+
+    @Query("DELETE FROM Subject_Statuses")
+    void deleteAll();
 }
