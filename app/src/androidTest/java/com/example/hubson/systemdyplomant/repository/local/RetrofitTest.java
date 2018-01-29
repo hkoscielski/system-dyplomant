@@ -37,6 +37,6 @@ public class RetrofitTest {
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).build();
         subjectDao = db.getSubjectDao();
         subjectStatusDao = db.getSubjectStatusDao();
-        subjectDbHelper = new SubjectDbHelper(subjectDao, subjectStatusDao);
+        subjectDbHelper = new SubjectDbHelper(subjectDao, subjectStatusDao, supervisorDao);
     }
 }

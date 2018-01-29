@@ -19,7 +19,7 @@ public interface SubjectStatusDao {
     LiveData<List<SubjectStatus>> loadAllStatuses();
 
     @Query("SELECT * FROM Subject_Statuses WHERE id_subject_status=:idSubjectStatus")
-    LiveData<SubjectStatus> loadStatusById(int idSubjectStatus);
+    SubjectStatus loadStatusById(int idSubjectStatus);
 
     @Query("SELECT * FROM Subject_Statuses WHERE status_name=:statusName")
     LiveData<SubjectStatus> loadStatusByName(String statusName);

@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.hubson.systemdyplomant.repository.local.dao.SupervisorDao;
+import com.example.hubson.systemdyplomant.repository.local.db_helper.SubjectDbHelper;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoinedResponse;
 import com.example.hubson.systemdyplomant.utils.AppExecutors;
@@ -34,7 +35,7 @@ public class SubjectRepository {
     private final Webservice webservice;
     private final AppDatabase db;
     private final AppExecutors appExecutors;
-    //private final SubjectDbHelper subjectDbHelper;
+    private final SubjectDbHelper subjectDbHelper;
 
     //    public SubjectRepository(SubjectDao subjectDao, Webservice webservice) {
 //        this.subjectDao = subjectDao;
@@ -52,7 +53,7 @@ public class SubjectRepository {
                 .build().create(Webservice.class);
         appExecutors = new AppExecutors();
 //        loadAllSubjectStatuses();
-        //subjectDbHelper = new SubjectDbHelper(subjectDao, subjectStatusDao);
+        subjectDbHelper = new SubjectDbHelper(subjectDao, subjectStatusDao, supervisorDao);
     }
 
     public LiveData<Resource<List<Subject>>> loadAllSubjects() {
