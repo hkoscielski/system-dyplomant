@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.btn_subject_list)
+    @OnClick(R.id.card_subject_list)
     public void goToMySubject() {
         Intent intent = new Intent(this, SubjectListActivity.class);
         startActivity(intent);

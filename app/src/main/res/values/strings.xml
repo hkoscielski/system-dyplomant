@@ -13,10 +13,10 @@
     <string name="btn_choose_text">Wybierz</string>
 
     <!--activity_main-->
-    <string name="btn_my_subject_text">Mój temat</string>
-    <string name="btn_change_text">Zmień temat lub promotora</string>
-    <string name="btn_subject_list_text">Przeglądaj listę aktualnych tematów</string>
-    <string name="btn_my_documents_text">Przeglądaj dokumenty</string>
+    <string name="text_my_subject_text">Mój temat</string>
+    <string name="text_change_text">Zmień temat lub promotora</string>
+    <string name="text_subject_list_text">Przeglądaj listę aktualnych tematów</string>
+    <string name="text_my_documents_text">Przeglądaj dokumenty</string>
 
     <!--activity_declaration-->
     <string name="text_graduate_label_text">Dane dyplomanta</string>
