@@ -1,5 +1,6 @@
 package com.example.hubson.systemdyplomant.view.subjects;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.example.hubson.systemdyplomant.repository.local.entity.SubjectStatus;
 import com.example.hubson.systemdyplomant.repository.local.entity.Supervisor;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoined;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -21,9 +23,11 @@ import butterknife.ButterKnife;
 
 public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.ViewHolder> {
     private List<SubjectJoined> subjects;
+    private final SubjectListCallback subjectListCallback;
 
-    public SubjectListAdapter(List<SubjectJoined> subjects) {
-        this.subjects = subjects;
+    public SubjectListAdapter(@NonNull SubjectListCallback subjectListCallback) {
+        this.subjects = new ArrayList<>();
+        this.subjectListCallback = subjectListCallback;
     }
 
     @Override
@@ -48,6 +52,7 @@ public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.
         }
         holder.textCreators.setText(creators.toString());
         holder.btnChoose.setEnabled(subjectJoined.getTakenUp() != subjectJoined.getLimit());
+        holder.btnChoose.setOnClickListener(v -> subjectListCallback.onSubjectClicked(subjectJoined));
     }
 
     @Override

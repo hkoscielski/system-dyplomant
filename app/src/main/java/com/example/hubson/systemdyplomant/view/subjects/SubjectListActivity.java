@@ -1,33 +1,24 @@
 package com.example.hubson.systemdyplomant.view.subjects;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.example.hubson.systemdyplomant.R;
-import com.example.hubson.systemdyplomant.repository.Resource;
-import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
+import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoined;
 import com.example.hubson.systemdyplomant.viewmodel.SubjectListViewModel;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SubjectListActivity extends AppCompatActivity {
+public class SubjectListActivity extends AppCompatActivity implements SubjectListCallback {
     @BindView(R.id.subject_list)
     RecyclerView subjectRecyclerView;
 
@@ -36,7 +27,7 @@ public class SubjectListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_list);
         ButterKnife.bind(this);
-        subjectRecyclerView.setAdapter(new SubjectListAdapter(new ArrayList<>()));
+        subjectRecyclerView.setAdapter(new SubjectListAdapter(this));
         subjectRecyclerView.setHasFixedSize(true);
         SubjectListViewModel subjectListViewModel = ViewModelProviders.of(this).get(SubjectListViewModel.class);
 
@@ -71,5 +62,25 @@ public class SubjectListActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSubjectClicked(SubjectJoined subjectJoined) {
+        showChooseSubjectAlertDialog();
+    }
+
+    private void showChooseSubjectAlertDialog() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle("Wybór tematu")
+                .setMessage("Czy na pewno chcesz wybrać ten temat do realizacji")
+                .setCancelable(false)
+                .setPositiveButton("Tak", (dialog, which) -> {
+
+                })
+                .setNegativeButton("Nie", (dialog, which) -> {
+
+                })
+                .create();
+        alertDialog.show();
     }
 }
