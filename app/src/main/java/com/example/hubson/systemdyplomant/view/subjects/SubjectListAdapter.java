@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.hubson.systemdyplomant.R;
@@ -46,6 +47,7 @@ public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.
             creators.append(graduate.getName()).append(" ").append(graduate.getSurname()).append(" ").append(graduate.getStudentNo()).append("\n");
         }
         holder.textCreators.setText(creators.toString());
+        holder.btnChoose.setEnabled(subjectJoined.getTakenUp() != subjectJoined.getLimit());
     }
 
     @Override
@@ -64,6 +66,7 @@ public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.
         @BindView(R.id.text_subject_status) TextView textSubjectStatus;
         @BindView(R.id.text_taken_up) TextView textTakenUp;
         @BindView(R.id.text_creators) TextView textCreators;
+        @BindView(R.id.btn_choose) Button btnChoose;
 
         public ViewHolder(View itemView) {
             super(itemView);

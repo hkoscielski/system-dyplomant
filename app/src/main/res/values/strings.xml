@@ -12,6 +12,12 @@
     <string name="text_creators_text">text_creators_text</string>
     <string name="btn_choose_text">Wybierz</string>
 
+    <!--activity_main-->
+    <string name="btn_my_subject_text">Mój temat</string>
+    <string name="btn_change_text">Zmień temat lub promotora</string>
+    <string name="btn_subject_list_text">Przeglądaj listę aktualnych tematów</string>
+    <string name="btn_my_documents_text">Przeglądaj dokumenty</string>
+
     <!--activity_declaration-->
     <string name="text_graduate_label_text">Dane dyplomanta</string>
     <string name="et_graduate_names_text">et_graduate_names_text</string>
@@ -27,6 +33,9 @@
     <string name="et_purpose_range_hint">Cel i zakres pracy</string>
     <string name="et_short_desc_hint">Krótki opis pracy</string>
 
+    <!--menu_main-->
+    <string name="item_account_title">Konto</string>
+    <string name="item_about_title">O aplikacji</string>
 
     <!--menu_subject_list-->
     <string name="item_search_title">Szukaj</string>

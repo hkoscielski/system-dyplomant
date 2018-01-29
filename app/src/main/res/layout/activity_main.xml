@@ -1,9 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.hubson.systemdyplomant.view.main.MainActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <View android:id="@+id/view_fake_horizontal"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"/>
+
+    <View android:id="@+id/view_fake_vertical"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerVertical="true"/>
+
+    <Button
+        android:id="@+id/btn_my_subject"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignEnd="@id/view_fake_horizontal"
+        android:layout_alignBottom="@id/view_fake_vertical"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/btn_my_subject_text"/>
+
+    <Button
+        android:id="@+id/btn_change"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignStart="@id/view_fake_horizontal"
+        android:layout_alignBottom="@id/view_fake_vertical"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/btn_change_text"/>
+
+    <Button
+        android:id="@+id/btn_subject_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignEnd="@id/view_fake_horizontal"
+        android:layout_alignTop="@id/view_fake_vertical"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/btn_subject_list_text"/>
+
+    <Button
+        android:id="@+id/btn_my_documents"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignStart="@id/view_fake_horizontal"
+        android:layout_alignTop="@id/view_fake_vertical"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/btn_my_documents_text"/>
+
+</RelativeLayout>
