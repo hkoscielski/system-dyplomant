@@ -1,6 +1,7 @@
 package com.example.hubson.systemdyplomant.repository.local.entity;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
@@ -26,12 +27,8 @@ public class Subject {
     private int idSubject;
 
     @SerializedName("id_supervisor")
-    @ColumnInfo(name = "id_supervisor")
+    @ColumnInfo(name = "supervisor_id")
     private int idSupervisor;
-
-    @SerializedName("supervisor")
-    @Ignore
-    private Supervisor supervisor;
 
     @SerializedName("subject_pl")
     @NonNull
@@ -55,12 +52,8 @@ public class Subject {
 
     @SerializedName("id_subject_status")
     @NonNull
-    @ColumnInfo(name = "id_subject_status")
+    @ColumnInfo(name = "subject_status_id")
     private Integer idSubjectStatus;
-
-    @SerializedName("subject_status")
-    @Ignore
-    private SubjectStatus subjectStatus;
 
     public Subject() {}
 
@@ -88,14 +81,6 @@ public class Subject {
 
     public void setIdSupervisor(int idSupervisor) {
         this.idSupervisor = idSupervisor;
-    }
-
-    public Supervisor getSupervisor() {
-        return supervisor;
-    }
-
-    public void setSupervisor(Supervisor supervisor) {
-        this.supervisor = supervisor;
     }
 
     @NonNull
@@ -152,13 +137,5 @@ public class Subject {
                 ", limit=" + limit +
                 ", idSubjectStatus=" + idSubjectStatus +
                 '}' + "\n\n";
-    }
-
-    public SubjectStatus getSubjectStatus() {
-        return subjectStatus;
-    }
-
-    public void setSubjectStatus(SubjectStatus subjectStatus) {
-        this.subjectStatus = subjectStatus;
     }
 }

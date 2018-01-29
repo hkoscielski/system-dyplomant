@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.example.hubson.systemdyplomant.repository.Resource;
 import com.example.hubson.systemdyplomant.repository.SubjectRepository;
 import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
+import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoined;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class SubjectListViewModel extends AndroidViewModel {
     private final SubjectRepository subjectRepository;
 //    private final LiveData<Resource<List<Subject>>> subjects;
 //    private final LiveData<Resource<List<SubjectStatus>>> subjectsStatuses;
-    private final LiveData<Resource<List<Subject>>> subjectsJoined;
+    private final LiveData<Resource<List<SubjectJoined>>> subjectsJoined;
 
     public SubjectListViewModel(@NonNull Application application) {
         super(application);
@@ -25,7 +26,7 @@ public class SubjectListViewModel extends AndroidViewModel {
         subjectsJoined = subjectRepository.loadAllSubjectJoined();
     }
 
-    public LiveData<Resource<List<Subject>>> getSubjectsJoined() {
+    public LiveData<Resource<List<SubjectJoined>>> getSubjectsJoined() {
         return subjectsJoined;
     }
 

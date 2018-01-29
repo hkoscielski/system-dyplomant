@@ -39,13 +39,13 @@ public class SubjectDbHelper {
 //                return subjectsMediatorLiveData;
 //            }
 //        });
-        subjectsLiveData = Transformations.map(subjectsLiveData, inputSubjects -> {
-            for(Subject subject : inputSubjects) {
-                subject.setSubjectStatus(subjectStatusDao.loadStatusById(subject.getIdSubjectStatus()));
-                subject.setSupervisor(supervisorDao.loadSupervisorById(subject.getIdSupervisor()));
-            }
-            return inputSubjects;
-        });
+//        subjectsLiveData = Transformations.map(subjectsLiveData, inputSubjects -> {
+//            for(Subject subject : inputSubjects) {
+//                subject.setSubjectStatus(subjectStatusDao.loadStatusById(subject.getIdSubjectStatus()));
+//                subject.setSupervisor(supervisorDao.loadSupervisorById(subject.getIdSupervisor()));
+//            }
+//            return inputSubjects;
+//        });
         return subjectsLiveData;
     }
 }

@@ -10,6 +10,7 @@ import android.util.Log;
 import com.example.hubson.systemdyplomant.repository.local.dao.SupervisorDao;
 import com.example.hubson.systemdyplomant.repository.local.db_helper.SubjectDbHelper;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
+import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoined;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoinedResponse;
 import com.example.hubson.systemdyplomant.utils.AppExecutors;
 import com.example.hubson.systemdyplomant.repository.local.AppDatabase;
@@ -91,26 +92,28 @@ public class SubjectRepository {
         }.getAsLiveData();
     }
 
-    public LiveData<Resource<List<Subject>>> loadAllSubjectJoined() {
-        return new NetworkBoundResource<List<Subject>, SubjectJoinedResponse>(appExecutors) {
+    public LiveData<Resource<List<SubjectJoined>>> loadAllSubjectJoined() {
+        return new NetworkBoundResource<List<SubjectJoined>, SubjectJoinedResponse>(appExecutors) {
             @Override
             protected void saveCallResult(@NonNull SubjectJoinedResponse item) {
-                List<Subject> subjectsJoined = item.getResults();
-                for(Subject subjectJoined : subjectsJoined) {
+                List<SubjectJoined> subjectsJoined = item.getResults();
+                for(SubjectJoined subjectJoined : subjectsJoined) {
                     subjectDao.insert(subjectJoined);
                     subjectStatusDao.insert(subjectJoined.getSubjectStatus());
                     supervisorDao.insert(subjectJoined.getSupervisor());
+                    Log.i("saveCallResult", subjectJoined.getSubjectStatus().getStatusName());
+                    Log.i("saveCallResult", subjectJoined.getSupervisor().getSurname());
                 }
             }
 
             @NonNull
             @Override
-            protected LiveData<List<Subject>> loadFromDb() {
+            protected LiveData<List<SubjectJoined>> loadFromDb() {
                 return subjectDao.loadAllSubjectsJoined();
             }
 
             @Override
-            protected boolean shouldFetch(@Nullable List<Subject> data) {
+            protected boolean shouldFetch(@Nullable List<SubjectJoined> data) {
                 return true;
             }
 

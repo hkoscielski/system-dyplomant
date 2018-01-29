@@ -10,6 +10,7 @@ import com.example.hubson.systemdyplomant.R;
 import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.repository.local.entity.SubjectStatus;
 import com.example.hubson.systemdyplomant.repository.local.entity.Supervisor;
+import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoined;
 
 import java.util.List;
 
@@ -17,9 +18,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.ViewHolder> {
-    private List<Subject> subjects;
+    private List<SubjectJoined> subjects;
 
-    public SubjectListAdapter(List<Subject> subjects) {
+    public SubjectListAdapter(List<SubjectJoined> subjects) {
         this.subjects = subjects;
     }
 
@@ -31,13 +32,14 @@ public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.
 
     @Override
     public void onBindViewHolder(SubjectListAdapter.ViewHolder holder, int position) {
-        Subject subjectJoined = subjects.get(position);
+        SubjectJoined subjectJoined = subjects.get(position);
         SubjectStatus subjectStatus = subjectJoined.getSubjectStatus();
         Supervisor supervisor = subjectJoined.getSupervisor();
 
         holder.textSubject.setText(subjectJoined.getSubjectPl());
         holder.textTakenUp.setText(subjectJoined.getTakenUp() + "/" + subjectJoined.getLimit());
         holder.textSubjectStatus.setText(subjectStatus != null ? subjectStatus.getStatusName() : "nie udało sie");
+        holder.textSupervisor.setText(supervisor != null ? supervisor.getAcademicTitle() + " " + supervisor.getName() + " " + supervisor.getSurname() : "brak");
     }
 
     @Override
@@ -45,7 +47,7 @@ public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.
         return subjects.size();
     }
 
-    public void setData(List<Subject> subjects) {
+    public void setData(List<SubjectJoined> subjects) {
         this.subjects = subjects;
         notifyDataSetChanged();
     }
