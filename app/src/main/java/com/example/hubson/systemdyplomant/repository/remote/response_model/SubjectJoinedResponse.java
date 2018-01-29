@@ -1,6 +1,5 @@
 package com.example.hubson.systemdyplomant.repository.remote.response_model;
 
-import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

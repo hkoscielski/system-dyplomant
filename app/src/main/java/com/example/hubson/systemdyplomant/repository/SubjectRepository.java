@@ -7,9 +7,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.hubson.systemdyplomant.repository.local.dao.GraduateDao;
 import com.example.hubson.systemdyplomant.repository.local.dao.SupervisorDao;
 import com.example.hubson.systemdyplomant.repository.local.db_helper.SubjectDbHelper;
+import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
+import com.example.hubson.systemdyplomant.repository.remote.response_model.GraduateResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoined;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoinedResponse;
 import com.example.hubson.systemdyplomant.utils.AppExecutors;
@@ -33,6 +36,7 @@ public class SubjectRepository {
     private final SubjectDao subjectDao;
     private final SubjectStatusDao subjectStatusDao;
     private final SupervisorDao supervisorDao;
+    private final GraduateDao graduateDao;
     private final Webservice webservice;
     private final AppDatabase db;
     private final AppExecutors appExecutors;
@@ -47,6 +51,7 @@ public class SubjectRepository {
         subjectDao = db.getSubjectDao();
         subjectStatusDao = db.getSubjectStatusDao();
         supervisorDao = db.getSupervisorDao();
+        graduateDao = db.getGraduateDao();
         webservice = new Retrofit.Builder()
                 .baseUrl(ApiConstants.HTTP_GRADUATE_API)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -55,6 +60,7 @@ public class SubjectRepository {
         appExecutors = new AppExecutors();
 //        loadAllSubjectStatuses();
         subjectDbHelper = new SubjectDbHelper(subjectDao, subjectStatusDao, supervisorDao);
+        //loadAllGraduates();
     }
 
     public LiveData<Resource<List<Subject>>> loadAllSubjects() {
@@ -101,8 +107,8 @@ public class SubjectRepository {
                     subjectDao.insert(subjectJoined);
                     subjectStatusDao.insert(subjectJoined.getSubjectStatus());
                     supervisorDao.insert(subjectJoined.getSupervisor());
-                    Log.i("saveCallResult", subjectJoined.getSubjectStatus().getStatusName());
-                    Log.i("saveCallResult", subjectJoined.getSupervisor().getSurname());
+                    //Log.i("saveCallResult", subjectJoined.getSubjectStatus().getStatusName());
+                    //Log.i("saveCallResult", subjectJoined.getSupervisor().getSurname());
                 }
             }
 
@@ -155,6 +161,40 @@ public class SubjectRepository {
             @Override
             protected LiveData<ApiResponse<SubjectStatusResponse>> createCall() {
                 return webservice.getSubjectStatuses();
+            }
+        }.getAsLiveData();
+    }
+
+    public LiveData<Resource<List<Graduate>>> loadAllGraduates() {
+        return new NetworkBoundResource<List<Graduate>, GraduateResponse>(appExecutors) {
+            @Override
+            protected void saveCallResult(@NonNull GraduateResponse item) {
+                graduateDao.insertAll(item.getResults());
+                for(Graduate graduate : item.getResults()) {
+                    Log.i("saveCallResult", graduate.getSurname());
+                }
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<List<Graduate>> loadFromDb() {
+                return graduateDao.loadAllGraduates();
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable List<Graduate> data) {
+                return true;
+            }
+
+            @Override
+            protected void onFetchFailed() {
+                Log.e("loadAllGraduates", "Lipa panie");
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<GraduateResponse>> createCall() {
+                return webservice.getGraduates();
             }
         }.getAsLiveData();
     }

@@ -9,14 +9,15 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "Graduates", foreignKeys = {
-        @ForeignKey(entity = Subject.class,
-                parentColumns = "id_subject",
-                childColumns = "id_subject"),
-        @ForeignKey(entity = FormOfStudies.class,
-                parentColumns = "id_form",
-                childColumns = "id_form")
-})
+@Entity(tableName = "Graduates"//, foreignKeys = {
+//        @ForeignKey(entity = Subject.class,
+//                parentColumns = "id_subject",
+//                childColumns = "subject_id"),
+//        @ForeignKey(entity = FormOfStudies.class,
+//                parentColumns = "id_form",
+//                childColumns = "id_form")
+//})
+)
 public class Graduate {
     @SerializedName("id_graduate")
     @PrimaryKey
@@ -25,7 +26,7 @@ public class Graduate {
 
     @SerializedName("id_subject")
     @Nullable
-    @ColumnInfo(name = "id_subject")
+    @ColumnInfo(name = "subject_id")
     private Integer idSubject;
 
     @SerializedName("name")
@@ -49,7 +50,7 @@ public class Graduate {
     private String speciality;
 
     @SerializedName("id_form")
-    @NonNull
+    //@NonNull
     @ColumnInfo(name = "id_form")
     private Integer idForm;
 
@@ -119,11 +120,11 @@ public class Graduate {
         this.speciality = speciality;
     }
 
-    public @NonNull Integer getIdForm() {
+    public Integer getIdForm() {
         return idForm;
     }
 
-    public void setIdForm(@NonNull Integer idForm) {
+    public void setIdForm(Integer idForm) {
         this.idForm = idForm;
     }
 

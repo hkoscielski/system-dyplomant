@@ -36,6 +36,12 @@ public class SubjectListActivity extends AppCompatActivity {
         subjectRecyclerView.setAdapter(new SubjectListAdapter(new ArrayList<>()));
         subjectRecyclerView.setHasFixedSize(true);
         SubjectListViewModel subjectListViewModel = ViewModelProviders.of(this).get(SubjectListViewModel.class);
+
+        subjectListViewModel.getGraduates().observe(this, graduates -> {
+            if(graduates != null && graduates.data != null) {
+                Log.i("SubjectListActivity", "Obserwujemy " + graduates.data.size() + " dyplomantów");
+            }
+        });
         subjectListViewModel.getSubjectsJoined().observe(this, subjects -> {
             if (subjects != null && subjects.data != null) {
                 if (subjectRecyclerView.getAdapter() != null && subjectRecyclerView.getAdapter() instanceof SubjectListAdapter) {
@@ -43,6 +49,7 @@ public class SubjectListActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     @Override
