@@ -1,7 +1,5 @@
 package com.example.hubson.systemdyplomant.repository.remote;
 
-import com.example.hubson.systemdyplomant.utils.LiveDataCallAdapterFactory;
-
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

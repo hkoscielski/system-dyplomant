@@ -1,4 +1,4 @@
-package com.example.hubson.systemdyplomant.utils;
+package com.example.hubson.systemdyplomant.repository.remote;
 
 import android.arch.lifecycle.LiveData;
 

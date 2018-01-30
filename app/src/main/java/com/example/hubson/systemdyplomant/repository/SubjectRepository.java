@@ -5,15 +5,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.hubson.systemdyplomant.repository.local.dao.GraduateDao;
 import com.example.hubson.systemdyplomant.repository.local.dao.SupervisorDao;
-import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
-import com.example.hubson.systemdyplomant.repository.remote.response_model.GraduateResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoined;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoinedResponse;
 import com.example.hubson.systemdyplomant.utils.AppExecutors;
-import com.example.hubson.systemdyplomant.repository.local.AppDatabase;
 import com.example.hubson.systemdyplomant.repository.local.dao.SubjectDao;
 import com.example.hubson.systemdyplomant.repository.local.dao.SubjectStatusDao;
 import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
@@ -31,23 +27,25 @@ public class SubjectRepository {
     private final SubjectDao subjectDao;
     private final SubjectStatusDao subjectStatusDao;
     private final SupervisorDao supervisorDao;
-    private final GraduateDao graduateDao;
     private final Webservice webservice;
     private final AppExecutors appExecutors;
 
-    private SubjectRepository(AppDatabase database, Webservice webservice, AppExecutors executors) {
+    private SubjectRepository(SubjectDao subjectDao, SubjectStatusDao subjectStatusDao,
+                              SupervisorDao supervisorDao, Webservice webservice, AppExecutors appExecutors) {
+        this.subjectDao = subjectDao;
+        this.subjectStatusDao = subjectStatusDao;
+        this.supervisorDao = supervisorDao;
         this.webservice = webservice;
-        this.appExecutors = executors;
-        subjectDao = database.getSubjectDao();
-        subjectStatusDao = database.getSubjectStatusDao();
-        supervisorDao = database.getSupervisorDao();
-        graduateDao = database.getGraduateDao();
+        this.appExecutors = appExecutors;
     }
 
-    public synchronized static SubjectRepository getInstance(AppDatabase database, Webservice webservice, AppExecutors executors) {
+    public synchronized static SubjectRepository getInstance(SubjectDao subjectDao, SubjectStatusDao subjectStatusDao,
+                                                             SupervisorDao supervisorDao, Webservice webservice,
+                                                             AppExecutors executors) {
         if (sInstance == null) {
             synchronized (LOCK) {
-                sInstance = new SubjectRepository(database, webservice, executors);
+                sInstance = new SubjectRepository(subjectDao, subjectStatusDao,
+                        supervisorDao, webservice, executors);
             }
         }
         return sInstance;
@@ -151,40 +149,6 @@ public class SubjectRepository {
             @Override
             protected LiveData<ApiResponse<SubjectStatusResponse>> createCall() {
                 return webservice.getSubjectStatuses();
-            }
-        }.getAsLiveData();
-    }
-
-    public LiveData<Resource<List<Graduate>>> loadAllGraduates() {
-        return new NetworkBoundResource<List<Graduate>, GraduateResponse>(appExecutors) {
-            @Override
-            protected void saveCallResult(@NonNull GraduateResponse item) {
-                graduateDao.insertAll(item.getResults());
-                for(Graduate graduate : item.getResults()) {
-                    Log.i("saveCallResult", graduate.getSurname());
-                }
-            }
-
-            @NonNull
-            @Override
-            protected LiveData<List<Graduate>> loadFromDb() {
-                return graduateDao.loadAllGraduates();
-            }
-
-            @Override
-            protected boolean shouldFetch(@Nullable List<Graduate> data) {
-                return true;
-            }
-
-            @Override
-            protected void onFetchFailed() {
-                Log.e("loadAllGraduates", "Lipa panie");
-            }
-
-            @NonNull
-            @Override
-            protected LiveData<ApiResponse<GraduateResponse>> createCall() {
-                return webservice.getGraduates();
             }
         }.getAsLiveData();
     }

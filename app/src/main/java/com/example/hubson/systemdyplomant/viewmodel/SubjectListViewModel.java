@@ -3,6 +3,7 @@ package com.example.hubson.systemdyplomant.viewmodel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.example.hubson.systemdyplomant.repository.GraduateRepository;
 import com.example.hubson.systemdyplomant.repository.Resource;
 import com.example.hubson.systemdyplomant.repository.SubjectRepository;
 import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
@@ -11,15 +12,11 @@ import com.example.hubson.systemdyplomant.repository.remote.response_model.Subje
 import java.util.List;
 
 public class SubjectListViewModel extends ViewModel {
-    private final SubjectRepository subjectRepository;
-
     private final LiveData<Resource<List<Graduate>>> graduates;
     private final LiveData<Resource<List<SubjectJoined>>> subjectsJoined;
 
-    public SubjectListViewModel(SubjectRepository subjectRepository) {
-        this.subjectRepository = subjectRepository;
-
-        graduates = subjectRepository.loadAllGraduates();
+    public SubjectListViewModel(SubjectRepository subjectRepository, GraduateRepository graduateRepository) {
+        graduates = graduateRepository.loadAllGraduates();
         subjectsJoined = subjectRepository.loadAllSubjectJoined();
     }
 

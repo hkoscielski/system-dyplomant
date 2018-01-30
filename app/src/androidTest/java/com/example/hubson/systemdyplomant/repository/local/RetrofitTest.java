@@ -10,7 +10,7 @@ import com.example.hubson.systemdyplomant.repository.local.dao.SubjectStatusDao;
 import com.example.hubson.systemdyplomant.repository.local.db_helper.SubjectDbHelper;
 import com.example.hubson.systemdyplomant.repository.remote.ApiConstants;
 import com.example.hubson.systemdyplomant.repository.remote.Webservice;
-import com.example.hubson.systemdyplomant.utils.LiveDataCallAdapterFactory;
+import com.example.hubson.systemdyplomant.repository.remote.LiveDataCallAdapterFactory;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
