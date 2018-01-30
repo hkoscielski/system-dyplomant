@@ -23,10 +23,12 @@ import butterknife.ButterKnife;
 
 public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.ViewHolder> {
     private List<SubjectJoined> subjects;
+    private List<SubjectJoined> filteredSubjects;
     private final SubjectListCallback subjectListCallback;
 
     public SubjectListAdapter(@NonNull SubjectListCallback subjectListCallback) {
         this.subjects = new ArrayList<>();
+        this.filteredSubjects = this.subjects;
         this.subjectListCallback = subjectListCallback;
     }
 

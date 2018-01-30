@@ -14,8 +14,10 @@ import android.view.MenuItem;
 
 import com.example.hubson.systemdyplomant.R;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoined;
+import com.example.hubson.systemdyplomant.utils.InjectorUtils;
 import com.example.hubson.systemdyplomant.view.declaration.DeclarationActivity;
 import com.example.hubson.systemdyplomant.viewmodel.SubjectListViewModel;
+import com.example.hubson.systemdyplomant.viewmodel.SubjectListViewModelFactory;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +33,9 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
         ButterKnife.bind(this);
         subjectRecyclerView.setAdapter(new SubjectListAdapter(this));
         subjectRecyclerView.setHasFixedSize(true);
-        SubjectListViewModel subjectListViewModel = ViewModelProviders.of(this).get(SubjectListViewModel.class);
+
+        SubjectListViewModelFactory factory = InjectorUtils.provideSubjectListActivityViewModelFactory(this.getApplicationContext());
+        SubjectListViewModel subjectListViewModel = ViewModelProviders.of(this, factory).get(SubjectListViewModel.class);
 
         subjectListViewModel.getGraduates().observe(this, graduates -> {
             if(graduates != null && graduates.data != null) {
@@ -68,13 +72,13 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
 
     @Override
     public void onSubjectClicked(SubjectJoined subjectJoined) {
-        showChooseSubjectAlertDialog();
+        showChooseSubjectAlertDialog(subjectJoined.getSubjectPl());
     }
 
-    private void showChooseSubjectAlertDialog() {
+    private void showChooseSubjectAlertDialog(String subjectName) {
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setTitle("Wybór tematu")
-                .setMessage("Czy na pewno chcesz wybrać ten temat do realizacji")
+                .setMessage("Czy na pewno chcesz wybrać ten temat do realizacji? Wybierasz temat: \"" + subjectName + "\"")
                 .setCancelable(false)
                 .setPositiveButton("Tak", (dialog, which) -> {
                     Intent intent = new Intent(this, DeclarationActivity.class);

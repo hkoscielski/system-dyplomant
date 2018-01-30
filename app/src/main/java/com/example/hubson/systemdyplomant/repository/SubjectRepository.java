@@ -1,15 +1,12 @@
 package com.example.hubson.systemdyplomant.repository;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.persistence.room.Room;
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.hubson.systemdyplomant.repository.local.dao.GraduateDao;
 import com.example.hubson.systemdyplomant.repository.local.dao.SupervisorDao;
-import com.example.hubson.systemdyplomant.repository.local.db_helper.SubjectDbHelper;
 import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.GraduateResponse;
@@ -21,46 +18,39 @@ import com.example.hubson.systemdyplomant.repository.local.dao.SubjectDao;
 import com.example.hubson.systemdyplomant.repository.local.dao.SubjectStatusDao;
 import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.repository.local.entity.SubjectStatus;
-import com.example.hubson.systemdyplomant.repository.remote.ApiConstants;
 import com.example.hubson.systemdyplomant.repository.remote.Webservice;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectStatusResponse;
-import com.example.hubson.systemdyplomant.utils.LiveDataCallAdapterFactory;
 
 import java.util.List;
 
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 public class SubjectRepository {
+    private static final Object LOCK = new Object();
+    private static SubjectRepository sInstance;
+
     private final SubjectDao subjectDao;
     private final SubjectStatusDao subjectStatusDao;
     private final SupervisorDao supervisorDao;
     private final GraduateDao graduateDao;
     private final Webservice webservice;
-    private final AppDatabase db;
     private final AppExecutors appExecutors;
-    private final SubjectDbHelper subjectDbHelper;
 
-    //    public SubjectRepository(SubjectDao subjectDao, Webservice webservice) {
-//        this.subjectDao = subjectDao;
-//        this.webservice = webservice;
-//    }
-    public SubjectRepository(Context context) {
-        db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).build();
-        subjectDao = db.getSubjectDao();
-        subjectStatusDao = db.getSubjectStatusDao();
-        supervisorDao = db.getSupervisorDao();
-        graduateDao = db.getGraduateDao();
-        webservice = new Retrofit.Builder()
-                .baseUrl(ApiConstants.HTTP_GRADUATE_API)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(new LiveDataCallAdapterFactory())
-                .build().create(Webservice.class);
-        appExecutors = new AppExecutors();
-//        loadAllSubjectStatuses();
-        subjectDbHelper = new SubjectDbHelper(subjectDao, subjectStatusDao, supervisorDao);
-        //loadAllGraduates();
+    private SubjectRepository(AppDatabase database, Webservice webservice, AppExecutors executors) {
+        this.webservice = webservice;
+        this.appExecutors = executors;
+        subjectDao = database.getSubjectDao();
+        subjectStatusDao = database.getSubjectStatusDao();
+        supervisorDao = database.getSupervisorDao();
+        graduateDao = database.getGraduateDao();
+    }
+
+    public synchronized static SubjectRepository getInstance(AppDatabase database, Webservice webservice, AppExecutors executors) {
+        if (sInstance == null) {
+            synchronized (LOCK) {
+                sInstance = new SubjectRepository(database, webservice, executors);
+            }
+        }
+        return sInstance;
     }
 
     public LiveData<Resource<List<Subject>>> loadAllSubjects() {
