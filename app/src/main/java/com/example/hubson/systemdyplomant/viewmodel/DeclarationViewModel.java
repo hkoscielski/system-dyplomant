@@ -6,9 +6,12 @@ import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
 import com.example.hubson.systemdyplomant.repository.DeclarationRepository;
+import com.example.hubson.systemdyplomant.repository.GraduateRepository;
 import com.example.hubson.systemdyplomant.repository.Resource;
 import com.example.hubson.systemdyplomant.repository.SubjectRepository;
 import com.example.hubson.systemdyplomant.repository.SupervisorRepository;
+import com.example.hubson.systemdyplomant.repository.local.entity.DeclarationStatus;
+import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
 import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.repository.local.entity.Supervisor;
 import com.example.hubson.systemdyplomant.utils.AbsentLiveData;
@@ -18,11 +21,16 @@ import java.util.Objects;
 public class DeclarationViewModel extends ViewModel {
     private final MutableLiveData<Integer> idSupervisor = new MutableLiveData<>();
     private final MutableLiveData<Integer> idSubject = new MutableLiveData<>();
+    private final MutableLiveData<String> declarationStatusName = new MutableLiveData<>();
+    private final MutableLiveData<Integer> idGraduate = new MutableLiveData<>();
+
     private LiveData<Resource<Supervisor>> supervisor = new MutableLiveData<>();
     private LiveData<Resource<Subject>> subject = new MutableLiveData<>();
+    private LiveData<Resource<DeclarationStatus>> declarationStatus = new MutableLiveData<>();
+    private LiveData<Resource<Graduate>> graduate = new MutableLiveData<>();
 
     public DeclarationViewModel(SupervisorRepository supervisorRepository, DeclarationRepository declarationRepository,
-                                SubjectRepository subjectRepository) {
+                                SubjectRepository subjectRepository, GraduateRepository graduateRepository) {
         supervisor = Transformations.switchMap(idSupervisor, idSupervisor -> {
             if(idSupervisor == null) {
                 return AbsentLiveData.create();
@@ -35,6 +43,20 @@ public class DeclarationViewModel extends ViewModel {
                 return AbsentLiveData.create();
             } else {
                 return subjectRepository.loadSubject(idSubject);
+            }
+        });
+        declarationStatus = Transformations.switchMap(declarationStatusName, statusName -> {
+            if(statusName == null) {
+                return AbsentLiveData.create();
+            } else {
+                return declarationRepository.loadDeclarationStatus(statusName);
+            }
+        });
+        graduate = Transformations.switchMap(idGraduate, idGraduate -> {
+            if(idGraduate == null) {
+                return AbsentLiveData.create();
+            } else {
+                return graduateRepository.loadGraduate(idGraduate);
             }
         });
     }
@@ -53,11 +75,33 @@ public class DeclarationViewModel extends ViewModel {
         this.idSubject.setValue(idSubject);
     }
 
+    public void setDeclarationStatusName(String statusName) {
+        if (Objects.equals(this.declarationStatusName.getValue(), statusName)) {
+            return;
+        }
+        this.declarationStatusName.setValue(statusName);
+    }
+
+    public void setIdGraduate(Integer idGraduate) {
+        if (Objects.equals(this.idGraduate.getValue(), idGraduate)) {
+            return;
+        }
+        this.idGraduate.setValue(idGraduate);
+    }
+
     public LiveData<Resource<Supervisor>> getSupervisor() {
         return supervisor;
     }
 
     public LiveData<Resource<Subject>> getSubject() {
         return subject;
+    }
+
+    public LiveData<Resource<DeclarationStatus>> getDeclarationStatus() {
+        return declarationStatus;
+    }
+
+    public LiveData<Resource<Graduate>> getGraduate() {
+        return graduate;
     }
 }

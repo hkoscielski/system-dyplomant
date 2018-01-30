@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.example.hubson.systemdyplomant.R;
 import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
-import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.repository.local.entity.SubjectStatus;
 import com.example.hubson.systemdyplomant.repository.local.entity.Supervisor;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoined;
@@ -45,7 +44,7 @@ public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.
         Supervisor supervisor = subjectJoined.getSupervisor();
 
         holder.textSubject.setText(subjectJoined.getSubjectPl());
-        holder.textTakenUp.setText(subjectJoined.getTakenUp() + "/" + subjectJoined.getLimit());
+        holder.textTakenUp.setText(String.format("%s/%s", subjectJoined.getTakenUp(), subjectJoined.getLimit()));
         holder.textSubjectStatus.setText(subjectStatus != null ? subjectStatus.getStatusName() : "nie udało sie");
         holder.textSupervisor.setText(supervisor != null ? supervisor.getAcademicTitle() + " " + supervisor.getName() + " " + supervisor.getSurname() : "brak");
         StringBuilder creators = new StringBuilder();

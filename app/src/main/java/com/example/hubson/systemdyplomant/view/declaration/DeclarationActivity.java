@@ -3,12 +3,15 @@ package com.example.hubson.systemdyplomant.view.declaration;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.hubson.systemdyplomant.R;
 import com.example.hubson.systemdyplomant.utils.InjectorUtils;
@@ -61,6 +64,7 @@ public class DeclarationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_declaration);
         ButterKnife.bind(this);
+        setUpActionBar();
 
         DeclarationViewModelFactory factory = InjectorUtils.provideDeclarationActivityViewModelFactory(this.getApplicationContext());
         DeclarationViewModel declarationViewModel = ViewModelProviders.of(this, factory).get(DeclarationViewModel.class);
@@ -71,7 +75,7 @@ public class DeclarationActivity extends AppCompatActivity {
         declarationViewModel.setIdSupervisor(supervisorId);
         declarationViewModel.getSupervisor().observe(this, supervisor -> {
             if(supervisor != null && supervisor.data != null) {
-                etSupervisorNames.setText(supervisor.data.getAcademicTitle() + " " + supervisor.data.getName() + " " + supervisor.data.getSurname());
+                etSupervisorNames.setText(String.format("%s %s %s", supervisor.data.getAcademicTitle(), supervisor.data.getName(), supervisor.data.getSurname()));
             }
         });
         declarationViewModel.setIdSubject(subjectId);
@@ -94,11 +98,27 @@ public class DeclarationActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case R.id.home:
+                showBackAlertDialog();
+                break;
             case R.id.item_send:
-                //TODO akcja
+                showSendDeclarationAlertDialog();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        showBackAlertDialog();
+    }
+
+    private void setUpActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     public static Intent newIntent(Context context, int subjectId, int supervisorId) {
@@ -107,4 +127,46 @@ public class DeclarationActivity extends AppCompatActivity {
         intent.putExtra(KEY_SUPERVISOR_ID, supervisorId);
         return intent;
     }
+
+    private void showSendDeclarationAlertDialog() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle("Udostępnienie deklaracji")
+                .setMessage("Czy na pewno chcesz udostępnić deklarację? Udostępniając ten dokument, deklarujesz chęć realizowanie pracy inżynierskiej o wybranym temacie.")
+                .setCancelable(false)
+                .setPositiveButton("Tak", (dialog, which) -> {
+
+                })
+                .setNegativeButton("Nie", (dialog, which) -> {
+
+                })
+                .create();
+        alertDialog.show();
+    }
+
+    private void showBackAlertDialog() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle("Rezygnuj z deklaracji")
+                .setMessage("Czy na pewno chcesz zrezygnować z wypełnienia deklaracji? Pamiętaj, że wprowadzone dane nie zostaną zapamiętane.")
+                .setCancelable(false)
+                .setPositiveButton("Tak", (dialog, which) -> {
+                    finish();
+                })
+                .setNegativeButton("Nie", (dialog, which) -> {
+
+                })
+                .create();
+        alertDialog.show();
+    }
+
+    private void saveDeclaration() {
+        int idSubject = getIntent().getIntExtra(KEY_SUBJECT_ID, 0);
+        String language = etLanguage.getText().toString();
+        String purposeRange = etShortDesc.getText().toString();
+        //int id_declaration_status =
+    }
+
+    public void showToast(String message) {
+        Toast.makeText(this.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
 }
+

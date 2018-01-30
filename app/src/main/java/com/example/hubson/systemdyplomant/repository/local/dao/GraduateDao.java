@@ -18,20 +18,17 @@ public interface GraduateDao {
     LiveData<List<Graduate>> loadAllGraduates();
 
     @Query("SELECT * FROM Graduates WHERE id_graduate=:idGraduate")
-    public Graduate findGraduateById(final int idGraduate);
-
-    @Query("SELECT * FROM Graduates WHERE subject_id=:idSubject")
-    public List<Graduate> findGraduatesForSubject(final int idSubject);
+    LiveData<Graduate> loadGraduateById(final int idGraduate);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertAll(List<Graduate> graduates);
+    void insertAll(List<Graduate> graduates);
 
-    @Insert
-    public void insert(Graduate graduate);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(Graduate graduate);
 
     @Update
-    public void update(Graduate graduate);
+    void update(Graduate graduate);
 
     @Delete
-    public void delete(Graduate graduate);
+    void delete(Graduate graduate);
 }

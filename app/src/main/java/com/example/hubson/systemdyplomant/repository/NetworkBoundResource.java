@@ -12,25 +12,20 @@ import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiRe
 import com.example.hubson.systemdyplomant.utils.AppExecutors;
 import com.example.hubson.systemdyplomant.utils.Objects;
 
-
 public abstract class NetworkBoundResource<ResultType, RequestType> {
     private final AppExecutors appExecutors;
     private final MediatorLiveData<Resource<ResultType>> result = new MediatorLiveData<>();
 
     @MainThread
     NetworkBoundResource(AppExecutors appExecutors) {
-        Log.i("NetworkBoundResource", "konstruktor");
         this.appExecutors = appExecutors;
         result.setValue(Resource.loading(null));
         LiveData<ResultType> dbSource = loadFromDb();
         result.addSource(dbSource, data -> {
             result.removeSource(dbSource);
-            Log.i("removeSource", "shouldFetch");
             if (shouldFetch(data)) {
-                Log.i("NetworkBoundResource", "pobieramy");
                 fetchFromNetwork(dbSource);
             } else {
-                Log.i("NetworkBoundResource", "nie pobieramy");
                 result.addSource(dbSource, newData -> setValue(Resource.success(newData)));
             }
         });
@@ -45,7 +40,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
 
     private void fetchFromNetwork(final LiveData<ResultType> dbSource) {
         LiveData<ApiResponse<RequestType>> apiResponse = createCall();
-        // we re-attach dbSource as a new source, it will dispatch its latest value quickly
+
         result.addSource(dbSource, newData -> setValue(Resource.loading(newData)));
         result.addSource(apiResponse, response -> {
             result.removeSource(apiResponse);
@@ -54,9 +49,6 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
                 appExecutors.diskIO().execute(() -> {
                     saveCallResult(processResponse(response));
                     appExecutors.mainThread().execute(() -> {
-                        // we specially request a new live data,
-                        // otherwise we will get immediately last cached value,
-                        // which may not be updated with latest results received from network.
                         result.addSource(loadFromDb(), newData -> setValue(Resource.success(newData)));
                         Log.i("Fetch", "OK");
                     });
@@ -73,7 +65,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
 
     @MainThread
     protected boolean shouldFetch(@Nullable ResultType data) {
-        return data == null;
+        return true;
     }
 
     @WorkerThread

@@ -53,6 +53,7 @@ public class InjectorUtils {
         DeclarationRepository declarationRepository = provideDeclarationRepository(context.getApplicationContext());
         SupervisorRepository supervisorRepository = provideSupervisorRepository(context.getApplicationContext());
         SubjectRepository subjectRepository = provideSubjectRepository(context.getApplicationContext());
-        return new DeclarationViewModelFactory(supervisorRepository, declarationRepository, subjectRepository);
+        GraduateRepository graduateRepository = provideGraduateRepository(context.getApplicationContext());
+        return new DeclarationViewModelFactory(supervisorRepository, declarationRepository, subjectRepository, graduateRepository);
     }
 }

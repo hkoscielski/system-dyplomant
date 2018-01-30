@@ -2,17 +2,14 @@ package com.example.hubson.systemdyplomant.repository.remote;
 
 import android.arch.lifecycle.LiveData;
 
-import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
+import com.example.hubson.systemdyplomant.repository.remote.response_model.DeclarationStatusResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.GraduateResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoinedResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectStatusResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SupervisorResponse;
 
-import java.util.List;
-
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -20,6 +17,9 @@ public interface Webservice {
 
     @GET("graduate/read.php")
     LiveData<ApiResponse<GraduateResponse>> getGraduates();
+
+    @GET("graduate/read_one.php")
+    LiveData<ApiResponse<GraduateResponse>> getGraduate(@Query("id_graduate") int idGraduate);
 
     @GET("subject/read.php")
     LiveData<ApiResponse<SubjectResponse>> getSubjects();
@@ -35,4 +35,10 @@ public interface Webservice {
 
     @GET("supervisor/read_one.php")
     LiveData<ApiResponse<SupervisorResponse>> getSupervisor(@Query("id_supervisor") int idSupervisor);
+
+    @GET("declaration_status/read_one.php")
+    LiveData<ApiResponse<DeclarationStatusResponse>> getDeclarationStatus(@Query("status_name") String statusName);
+
+    @GET("declaration_status/read.php")
+    LiveData<ApiResponse<DeclarationStatusResponse>> getDeclarationStatuses();
 }

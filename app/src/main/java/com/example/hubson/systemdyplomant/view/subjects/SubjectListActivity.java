@@ -1,8 +1,6 @@
 package com.example.hubson.systemdyplomant.view.subjects;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -49,7 +47,6 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
                 }
             }
         });
-
     }
 
     @Override
