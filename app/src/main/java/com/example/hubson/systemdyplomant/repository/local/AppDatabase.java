@@ -5,6 +5,8 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.example.hubson.systemdyplomant.repository.local.dao.DeclarationDao;
+import com.example.hubson.systemdyplomant.repository.local.dao.DeclarationStatusDao;
 import com.example.hubson.systemdyplomant.repository.local.dao.FormOfStudiesDao;
 import com.example.hubson.systemdyplomant.repository.local.dao.GraduateDao;
 import com.example.hubson.systemdyplomant.repository.local.dao.SubjectDao;
@@ -23,6 +25,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract SubjectDao getSubjectDao();
     public abstract SubjectStatusDao getSubjectStatusDao();
     public abstract SupervisorDao getSupervisorDao();
+    public abstract DeclarationDao getDeclarationDao();
+    public abstract DeclarationStatusDao getDeclarationStatusDao();
 
     public static AppDatabase getInstance(Context context) {
         if (dbInstance == null) {

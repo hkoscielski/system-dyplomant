@@ -72,17 +72,16 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
 
     @Override
     public void onSubjectClicked(SubjectJoined subjectJoined) {
-        showChooseSubjectAlertDialog(subjectJoined.getSubjectPl());
+        showChooseSubjectAlertDialog(subjectJoined);
     }
 
-    private void showChooseSubjectAlertDialog(String subjectName) {
+    private void showChooseSubjectAlertDialog(SubjectJoined subjectJoined) {
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setTitle("Wybór tematu")
-                .setMessage("Czy na pewno chcesz wybrać ten temat do realizacji? Wybierasz temat: \"" + subjectName + "\"")
+                .setMessage("Czy na pewno chcesz wybrać ten temat do realizacji? Wybierasz temat: \"" + subjectJoined.getSubjectPl() + "\"")
                 .setCancelable(false)
                 .setPositiveButton("Tak", (dialog, which) -> {
-                    Intent intent = new Intent(this, DeclarationActivity.class);
-                    startActivity(intent);
+                    startActivity(DeclarationActivity.newIntent(this, subjectJoined.getIdSubject(), subjectJoined.getIdSupervisor()));
                 })
                 .setNegativeButton("Nie", (dialog, which) -> {
 

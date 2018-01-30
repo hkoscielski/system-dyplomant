@@ -69,7 +69,6 @@ public class SubjectRepository {
             @NonNull
             @Override
             protected LiveData<List<Subject>> loadFromDb() {
-                Log.e("loadFromDb", "Działaj kurwa");
                 return subjectDao.loadAllSubjects();
             }
 
@@ -95,8 +94,6 @@ public class SubjectRepository {
                     subjectDao.insert(subjectJoined);
                     subjectStatusDao.insert(subjectJoined.getSubjectStatus());
                     supervisorDao.insert(subjectJoined.getSupervisor());
-                    //Log.i("saveCallResult", subjectJoined.getSubjectStatus().getStatusName());
-                    //Log.i("saveCallResult", subjectJoined.getSupervisor().getSurname());
                 }
             }
 
@@ -119,11 +116,39 @@ public class SubjectRepository {
         }.getAsLiveData();
     }
 
+    public LiveData<Resource<Subject>> loadSubject(int idSubject) {
+        return new NetworkBoundResource<Subject, SubjectResponse>(appExecutors) {
+            @Override
+            protected void saveCallResult(@NonNull SubjectResponse item) {
+                Log.i("loadSubject", "zapisano do bazy");
+                subjectDao.insertAll(item.getResults());
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<Subject> loadFromDb() {
+                Log.i("loadSubject", "zaladowano z bazy");
+                return subjectDao.loadSubjectById(idSubject);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable Subject data) {
+                return data == null;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<SubjectResponse>> createCall() {
+                Log.i("loadSubject", "polaczono z api");
+                return webservice.getSubject(idSubject);
+            }
+        }.getAsLiveData();
+    }
+
     public LiveData<Resource<List<SubjectStatus>>> loadAllSubjectStatuses() {
         return new NetworkBoundResource<List<SubjectStatus>, SubjectStatusResponse>(appExecutors) {
             @Override
             protected void saveCallResult(@NonNull SubjectStatusResponse item) {
-                Log.e("saveCallResult_allSS", "Działaj kurwa");
                 subjectStatusDao.deleteAll();
                 subjectStatusDao.insertAll(item.getResults());
             }
@@ -131,7 +156,6 @@ public class SubjectRepository {
             @NonNull
             @Override
             protected LiveData<List<SubjectStatus>> loadFromDb() {
-                Log.e("loadFromDb_allSS", "Działaj kurwa");
                 return subjectStatusDao.loadAllStatuses();
             }
 

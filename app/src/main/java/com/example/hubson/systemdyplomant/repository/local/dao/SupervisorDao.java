@@ -10,17 +10,22 @@ import android.arch.persistence.room.Update;
 
 import com.example.hubson.systemdyplomant.repository.local.entity.Supervisor;
 
+import java.util.List;
+
 @Dao
 public interface SupervisorDao {
     @Query("SELECT * FROM Supervisors WHERE id_supervisor=:idSupervisor")
-    public Supervisor loadSupervisorById(final int idSupervisor);
+    LiveData<Supervisor> loadSupervisorById(final int idSupervisor);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insert(Supervisor supervisor);
+    void insertAll(List<Supervisor> supervisors);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(Supervisor supervisor);
 
     @Update
-    public void update(Supervisor supervisor);
+    void update(Supervisor supervisor);
 
     @Delete
-    public void delete(Supervisor supervisor);
+    void delete(Supervisor supervisor);
 }
