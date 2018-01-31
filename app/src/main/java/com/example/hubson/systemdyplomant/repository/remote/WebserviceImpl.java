@@ -1,5 +1,7 @@
 package com.example.hubson.systemdyplomant.repository.remote;
 
+import com.google.gson.GsonBuilder;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -14,7 +16,7 @@ public class WebserviceImpl {
             synchronized (LOCK) {
                 sInstance = new Retrofit.Builder()
                     .baseUrl(ApiConstants.HTTP_GRADUATE_API)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
                     .addCallAdapterFactory(new LiveDataCallAdapterFactory())
                     .build().create(Webservice.class);
             }

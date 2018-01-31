@@ -78,10 +78,10 @@ public class SubjectRepository {
     }
 
     public LiveData<Resource<Subject>> loadSubject(int idSubject) {
-        return new NetworkBoundResource<Subject, SubjectResponse>(appExecutors) {
+        return new NetworkBoundResource<Subject, Subject>(appExecutors) {
             @Override
-            protected void saveCallResult(@NonNull SubjectResponse item) {
-                subjectDao.insertAll(item.getResults());
+            protected void saveCallResult(@NonNull Subject item) {
+                subjectDao.insert(item);
             }
 
             @NonNull
@@ -97,7 +97,7 @@ public class SubjectRepository {
 
             @NonNull
             @Override
-            protected LiveData<ApiResponse<SubjectResponse>> createCall() {
+            protected LiveData<ApiResponse<Subject>> createCall() {
                 return webservice.getSubject(idSubject);
             }
         }.getAsLiveData();

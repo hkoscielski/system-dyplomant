@@ -2,7 +2,10 @@ package com.example.hubson.systemdyplomant.repository.remote;
 
 import android.arch.lifecycle.LiveData;
 
+import com.example.hubson.systemdyplomant.repository.local.entity.Declaration;
+import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
+import com.example.hubson.systemdyplomant.repository.remote.response_model.CreateResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.DeclarationStatusResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.GraduateResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoinedResponse;
@@ -10,10 +13,15 @@ import com.example.hubson.systemdyplomant.repository.remote.response_model.Subje
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectStatusResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SupervisorResponse;
 
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface Webservice {
+
+    @POST("declaration/create.php")
+    LiveData<ApiResponse<CreateResponse>> createDeclaration(@Body Declaration declaration);
 
     @GET("graduate/read.php")
     LiveData<ApiResponse<GraduateResponse>> getGraduates();
@@ -25,7 +33,7 @@ public interface Webservice {
     LiveData<ApiResponse<SubjectResponse>> getSubjects();
 
     @GET("subject/read_one.php")
-    LiveData<ApiResponse<SubjectResponse>> getSubject(@Query("id_subject") int idSubject);
+    LiveData<ApiResponse<Subject>> getSubject(@Query("id_subject") int idSubject);
 
     @GET("subject_joined/read.php")
     LiveData<ApiResponse<SubjectJoinedResponse>> getSubjectsJoined();
