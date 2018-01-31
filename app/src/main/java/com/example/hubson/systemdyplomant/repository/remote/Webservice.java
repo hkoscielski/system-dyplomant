@@ -3,6 +3,7 @@ package com.example.hubson.systemdyplomant.repository.remote;
 import android.arch.lifecycle.LiveData;
 
 import com.example.hubson.systemdyplomant.repository.local.entity.Declaration;
+import com.example.hubson.systemdyplomant.repository.local.entity.DeclarationStatus;
 import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.CreateResponse;
@@ -45,7 +46,7 @@ public interface Webservice {
     LiveData<ApiResponse<SupervisorResponse>> getSupervisor(@Query("id_supervisor") int idSupervisor);
 
     @GET("declaration_status/read_one.php")
-    LiveData<ApiResponse<DeclarationStatusResponse>> getDeclarationStatus(@Query("status_name") String statusName);
+    LiveData<ApiResponse<DeclarationStatus>> getDeclarationStatus(@Query("status_name") String statusName);
 
     @GET("declaration_status/read.php")
     LiveData<ApiResponse<DeclarationStatusResponse>> getDeclarationStatuses();

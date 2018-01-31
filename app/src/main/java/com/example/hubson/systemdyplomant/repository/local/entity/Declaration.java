@@ -68,10 +68,7 @@ public class Declaration {
     @ColumnInfo(name = "id_declaration_status")
     private Integer idDeclarationStatus;
 
-    public Declaration() {}
-
-    public Declaration(int idDeclaration, @NonNull Integer idSubject, @NonNull Integer idGraduate, @NonNull String language, @NonNull String purposeRange, @NonNull String shortDesc, Date submitDate, Date supervisorSignDate, @NonNull Integer idDeclarationStatus) {
-        this.idDeclaration = idDeclaration;
+   public Declaration(@NonNull Integer idSubject, @NonNull Integer idGraduate, @NonNull String language, @NonNull String purposeRange, @NonNull String shortDesc, Date submitDate, Date supervisorSignDate, @NonNull Integer idDeclarationStatus) {
         this.idSubject = idSubject;
         this.idGraduate = idGraduate;
         this.language = language;

@@ -10,10 +10,13 @@ import com.example.hubson.systemdyplomant.repository.GraduateRepository;
 import com.example.hubson.systemdyplomant.repository.Resource;
 import com.example.hubson.systemdyplomant.repository.SubjectRepository;
 import com.example.hubson.systemdyplomant.repository.SupervisorRepository;
+import com.example.hubson.systemdyplomant.repository.local.entity.Declaration;
 import com.example.hubson.systemdyplomant.repository.local.entity.DeclarationStatus;
 import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
 import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.repository.local.entity.Supervisor;
+import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
+import com.example.hubson.systemdyplomant.repository.remote.response_model.CreateResponse;
 import com.example.hubson.systemdyplomant.utils.AbsentLiveData;
 
 import java.util.Objects;
@@ -29,8 +32,12 @@ public class DeclarationViewModel extends ViewModel {
     private LiveData<Resource<DeclarationStatus>> declarationStatus = new MutableLiveData<>();
     private LiveData<Resource<Graduate>> graduate = new MutableLiveData<>();
 
+    private DeclarationRepository declarationRepository;
+
     public DeclarationViewModel(SupervisorRepository supervisorRepository, DeclarationRepository declarationRepository,
                                 SubjectRepository subjectRepository, GraduateRepository graduateRepository) {
+        this.declarationRepository = declarationRepository;
+
         supervisor = Transformations.switchMap(idSupervisor, idSupervisor -> {
             if(idSupervisor == null) {
                 return AbsentLiveData.create();
@@ -103,5 +110,9 @@ public class DeclarationViewModel extends ViewModel {
 
     public LiveData<Resource<Graduate>> getGraduate() {
         return graduate;
+    }
+
+    public LiveData<ApiResponse<CreateResponse>> createDeclaration(Declaration declaration) {
+        return declarationRepository.saveDeclaration(declaration);
     }
 }

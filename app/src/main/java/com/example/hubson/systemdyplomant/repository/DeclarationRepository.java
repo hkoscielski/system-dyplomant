@@ -6,9 +6,11 @@ import android.support.annotation.Nullable;
 
 import com.example.hubson.systemdyplomant.repository.local.dao.DeclarationDao;
 import com.example.hubson.systemdyplomant.repository.local.dao.DeclarationStatusDao;
+import com.example.hubson.systemdyplomant.repository.local.entity.Declaration;
 import com.example.hubson.systemdyplomant.repository.local.entity.DeclarationStatus;
 import com.example.hubson.systemdyplomant.repository.remote.Webservice;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
+import com.example.hubson.systemdyplomant.repository.remote.response_model.CreateResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.DeclarationStatusResponse;
 import com.example.hubson.systemdyplomant.utils.AppExecutors;
 
@@ -55,11 +57,6 @@ public class DeclarationRepository {
                 return declarationStatusDao.loadAllStatuses();
             }
 
-            @Override
-            protected boolean shouldFetch(@Nullable List<DeclarationStatus> data) {
-                return true;
-            }
-
             @NonNull
             @Override
             protected LiveData<ApiResponse<DeclarationStatusResponse>> createCall() {
@@ -69,11 +66,11 @@ public class DeclarationRepository {
     }
 
     public LiveData<Resource<DeclarationStatus>> loadDeclarationStatus(String statusName) {
-        return new NetworkBoundResource<DeclarationStatus, DeclarationStatusResponse>(appExecutors) {
+        return new NetworkBoundResource<DeclarationStatus, DeclarationStatus>(appExecutors) {
 
             @Override
-            protected void saveCallResult(@NonNull DeclarationStatusResponse item) {
-                declarationStatusDao.insertAll(item.getResults());
+            protected void saveCallResult(@NonNull DeclarationStatus item) {
+                declarationStatusDao.insert(item);
             }
 
             @NonNull
@@ -89,9 +86,13 @@ public class DeclarationRepository {
 
             @NonNull
             @Override
-            protected LiveData<ApiResponse<DeclarationStatusResponse>> createCall() {
+            protected LiveData<ApiResponse<DeclarationStatus>> createCall() {
                 return webservice.getDeclarationStatus(statusName);
             }
         }.getAsLiveData();
+    }
+
+    public LiveData<ApiResponse<CreateResponse>> saveDeclaration(Declaration declaration) {
+        return webservice.createDeclaration(declaration);
     }
 }

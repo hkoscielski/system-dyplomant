@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.hubson.systemdyplomant.R;
+import com.example.hubson.systemdyplomant.repository.local.entity.Declaration;
 import com.example.hubson.systemdyplomant.utils.InjectorUtils;
 import com.example.hubson.systemdyplomant.viewmodel.DeclarationViewModel;
 import com.example.hubson.systemdyplomant.viewmodel.DeclarationViewModelFactory;
@@ -56,8 +58,14 @@ public class DeclarationActivity extends AppCompatActivity {
     @BindView(R.id.et_short_desc)
     EditText etShortDesc;
 
+    private DeclarationViewModel declarationViewModel;
+
+    private int idDeclarationStatus;
+
     private static final String KEY_SUBJECT_ID = "key_subject_id";
     private static final String KEY_SUPERVISOR_ID = "key_supervisor_id";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +75,7 @@ public class DeclarationActivity extends AppCompatActivity {
         setUpActionBar();
 
         DeclarationViewModelFactory factory = InjectorUtils.provideDeclarationActivityViewModelFactory(this.getApplicationContext());
-        DeclarationViewModel declarationViewModel = ViewModelProviders.of(this, factory).get(DeclarationViewModel.class);
+        this.declarationViewModel = ViewModelProviders.of(this, factory).get(DeclarationViewModel.class);
 
         Intent intent = getIntent();
         int supervisorId = intent.getIntExtra(KEY_SUPERVISOR_ID, 0);
@@ -83,6 +91,14 @@ public class DeclarationActivity extends AppCompatActivity {
             if(subject != null && subject.data != null) {
                 etSubjectPl.setText(subject.data.getSubjectPl());
                 etSubjectEn.setText(subject.data.getSubjectEn());
+            }
+        });
+        declarationViewModel.setDeclarationStatusName("Złożona");
+        declarationViewModel.getDeclarationStatus().observe(this, status -> {
+            if(status != null && status.data != null) {
+                idDeclarationStatus = status.data.getIdDeclarationStatus();
+                Log.d("DeclarationStatus_id", String.valueOf(status.data.getIdDeclarationStatus()));
+                Log.d("DeclarationStatus_name", String.valueOf(status.data.getStatusName()));
             }
         });
     }
@@ -134,7 +150,7 @@ public class DeclarationActivity extends AppCompatActivity {
                 .setMessage("Czy na pewno chcesz udostępnić deklarację? Udostępniając ten dokument, deklarujesz chęć realizowanie pracy inżynierskiej o wybranym temacie.")
                 .setCancelable(false)
                 .setPositiveButton("Tak", (dialog, which) -> {
-
+                    saveDeclaration();
                 })
                 .setNegativeButton("Nie", (dialog, which) -> {
 
@@ -149,7 +165,7 @@ public class DeclarationActivity extends AppCompatActivity {
                 .setMessage("Czy na pewno chcesz zrezygnować z wypełnienia deklaracji? Pamiętaj, że wprowadzone dane nie zostaną zapamiętane.")
                 .setCancelable(false)
                 .setPositiveButton("Tak", (dialog, which) -> {
-                    finish();
+
                 })
                 .setNegativeButton("Nie", (dialog, which) -> {
 
@@ -161,8 +177,26 @@ public class DeclarationActivity extends AppCompatActivity {
     private void saveDeclaration() {
         int idSubject = getIntent().getIntExtra(KEY_SUBJECT_ID, 0);
         String language = etLanguage.getText().toString();
-        String purposeRange = etShortDesc.getText().toString();
-        //int id_declaration_status =
+        String purposeRange = etPurposeRange.getText().toString();
+        String shortDesc = etShortDesc.getText().toString();
+        if(language.isEmpty() || purposeRange.isEmpty() || shortDesc.isEmpty()) {
+            showToast("Nie udało się udostępnić deklaracji. Sprawdź czy wszystkie dane zostały wypełnione poprawnie");
+            etLanguage.setText("");
+            etPurposeRange.setText("");
+            etShortDesc.setText("");
+        } else {
+            Declaration declaration = new Declaration(idSubject, 3, language, purposeRange, shortDesc, null, null, idDeclarationStatus);
+            declarationViewModel.createDeclaration(declaration).observe(this, response -> {
+                if(response != null && response.body != null) {
+                    if(response.body.getSuccess()) {
+                        finish();
+                        showToast("Deklaracja została przyjęta pomyślnie");
+                    } else {
+                        showToast("Nie udało się udostępnić deklaracji. Sprawdź czy wszystkie dane zostały wprowadzone poprawnie");
+                    }
+                }
+            });
+        }
     }
 
     public void showToast(String message) {
