@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.hubson.systemdyplomant.R;
 import com.example.hubson.systemdyplomant.repository.local.entity.Declaration;
 import com.example.hubson.systemdyplomant.utils.InjectorUtils;
+import com.example.hubson.systemdyplomant.view.main.MainActivity;
 import com.example.hubson.systemdyplomant.viewmodel.DeclarationViewModel;
 import com.example.hubson.systemdyplomant.viewmodel.DeclarationViewModelFactory;
 
@@ -189,6 +190,7 @@ public class DeclarationActivity extends AppCompatActivity {
             declarationViewModel.createDeclaration(declaration).observe(this, response -> {
                 if(response != null && response.body != null) {
                     if(response.body.getSuccess()) {
+                        startActivity(new Intent(this, MainActivity.class));
                         finish();
                         showToast("Deklaracja została przyjęta pomyślnie");
                     } else {

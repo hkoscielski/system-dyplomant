@@ -4,11 +4,12 @@ import android.arch.lifecycle.LiveData;
 
 import com.example.hubson.systemdyplomant.repository.local.entity.Declaration;
 import com.example.hubson.systemdyplomant.repository.local.entity.DeclarationStatus;
+import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
 import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
-import com.example.hubson.systemdyplomant.repository.remote.response_model.CreateResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.DeclarationStatusResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.GraduateResponse;
+import com.example.hubson.systemdyplomant.repository.remote.response_model.PostResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoinedResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectStatusResponse;
@@ -22,7 +23,13 @@ import retrofit2.http.Query;
 public interface Webservice {
 
     @POST("declaration/create.php")
-    LiveData<ApiResponse<CreateResponse>> createDeclaration(@Body Declaration declaration);
+    LiveData<ApiResponse<PostResponse>> createDeclaration(@Body Declaration declaration);
+
+    @POST("subject/update.php")
+    LiveData<ApiResponse<PostResponse>> updateSubject(@Body Subject subject);
+
+    @POST("graduate/update.php")
+    LiveData<ApiResponse<PostResponse>> updateGraduate(@Body Graduate graduate);
 
     @GET("graduate/read.php")
     LiveData<ApiResponse<GraduateResponse>> getGraduates();

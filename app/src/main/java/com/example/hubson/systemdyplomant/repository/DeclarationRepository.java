@@ -8,10 +8,12 @@ import com.example.hubson.systemdyplomant.repository.local.dao.DeclarationDao;
 import com.example.hubson.systemdyplomant.repository.local.dao.DeclarationStatusDao;
 import com.example.hubson.systemdyplomant.repository.local.entity.Declaration;
 import com.example.hubson.systemdyplomant.repository.local.entity.DeclarationStatus;
+import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
+import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.repository.remote.Webservice;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
-import com.example.hubson.systemdyplomant.repository.remote.response_model.CreateResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.DeclarationStatusResponse;
+import com.example.hubson.systemdyplomant.repository.remote.response_model.PostResponse;
 import com.example.hubson.systemdyplomant.utils.AppExecutors;
 
 import java.util.List;
@@ -92,7 +94,15 @@ public class DeclarationRepository {
         }.getAsLiveData();
     }
 
-    public LiveData<ApiResponse<CreateResponse>> saveDeclaration(Declaration declaration) {
+    public LiveData<ApiResponse<PostResponse>> saveDeclaration(Declaration declaration) {
         return webservice.createDeclaration(declaration);
+    }
+
+    public LiveData<ApiResponse<PostResponse>> updateGraduate(Graduate graduate) {
+        return webservice.updateGraduate(graduate);
+    }
+
+    public LiveData<ApiResponse<PostResponse>> updateSubject(Subject subject) {
+        return webservice.updateSubject(subject);
     }
 }

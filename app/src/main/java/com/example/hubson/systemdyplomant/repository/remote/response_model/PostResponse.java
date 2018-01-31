@@ -3,7 +3,7 @@ package com.example.hubson.systemdyplomant.repository.remote.response_model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CreateResponse {
+public class PostResponse {
     @SerializedName("success")
     @Expose
     private Boolean success;
@@ -12,7 +12,7 @@ public class CreateResponse {
     @Expose
     private String message;
 
-    public CreateResponse(Boolean success, String message) {
+    public PostResponse(Boolean success, String message) {
         this.success = success;
         this.message = message;
     }

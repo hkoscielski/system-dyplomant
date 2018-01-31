@@ -16,7 +16,7 @@ import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
 import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.repository.local.entity.Supervisor;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
-import com.example.hubson.systemdyplomant.repository.remote.response_model.CreateResponse;
+import com.example.hubson.systemdyplomant.repository.remote.response_model.PostResponse;
 import com.example.hubson.systemdyplomant.utils.AbsentLiveData;
 
 import java.util.Objects;
@@ -112,7 +112,7 @@ public class DeclarationViewModel extends ViewModel {
         return graduate;
     }
 
-    public LiveData<ApiResponse<CreateResponse>> createDeclaration(Declaration declaration) {
+    public LiveData<ApiResponse<PostResponse>> createDeclaration(Declaration declaration) {
         return declarationRepository.saveDeclaration(declaration);
     }
 }
