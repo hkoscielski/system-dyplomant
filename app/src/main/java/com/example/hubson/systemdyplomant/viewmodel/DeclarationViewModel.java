@@ -12,6 +12,7 @@ import com.example.hubson.systemdyplomant.repository.SubjectRepository;
 import com.example.hubson.systemdyplomant.repository.SupervisorRepository;
 import com.example.hubson.systemdyplomant.repository.local.entity.Declaration;
 import com.example.hubson.systemdyplomant.repository.local.entity.DeclarationStatus;
+import com.example.hubson.systemdyplomant.repository.local.entity.FormOfStudies;
 import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
 import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.repository.local.entity.SubjectStatus;
@@ -28,12 +29,14 @@ public class DeclarationViewModel extends ViewModel {
     private final MutableLiveData<String> declarationStatusName = new MutableLiveData<>();
     private final MutableLiveData<String> subjectStatusName = new MutableLiveData<>();
     private final MutableLiveData<Integer> idGraduate = new MutableLiveData<>();
+    private final MutableLiveData<Integer> idForm = new MutableLiveData<>();
 
     private LiveData<Resource<Supervisor>> supervisor = new MutableLiveData<>();
     private LiveData<Resource<Subject>> subject = new MutableLiveData<>();
     private LiveData<Resource<DeclarationStatus>> declarationStatus = new MutableLiveData<>();
     private LiveData<Resource<SubjectStatus>> subjectStatus = new MutableLiveData<>();
     private LiveData<Resource<Graduate>> graduate = new MutableLiveData<>();
+    private LiveData<Resource<FormOfStudies>> form = new MutableLiveData<>();
 
     private DeclarationRepository declarationRepository;
     private SubjectRepository subjectRepository;
@@ -80,6 +83,13 @@ public class DeclarationViewModel extends ViewModel {
                 return graduateRepository.loadGraduate(idGraduate);
             }
         });
+        form = Transformations.switchMap(idForm, idForm -> {
+            if(idForm == null) {
+                return AbsentLiveData.create();
+            } else {
+                return graduateRepository.loadFormOfStudies(idForm);
+            }
+        });
     }
 
     public void setIdSupervisor(Integer idSupervisor) {
@@ -117,6 +127,13 @@ public class DeclarationViewModel extends ViewModel {
         this.idGraduate.setValue(idGraduate);
     }
 
+    public void setIdForm(Integer idForm) {
+        if(Objects.equals(this.idForm.getValue(), idForm)) {
+            return;
+        }
+        this.idForm.setValue(idForm);
+    }
+
     public LiveData<Resource<Supervisor>> getSupervisor() {
         return supervisor;
     }
@@ -135,6 +152,10 @@ public class DeclarationViewModel extends ViewModel {
 
     public LiveData<Resource<Graduate>> getGraduate() {
         return graduate;
+    }
+
+    public LiveData<Resource<FormOfStudies>> getForm() {
+        return form;
     }
 
     public LiveData<ApiResponse<PostResponse>> createDeclaration(Declaration declaration) {

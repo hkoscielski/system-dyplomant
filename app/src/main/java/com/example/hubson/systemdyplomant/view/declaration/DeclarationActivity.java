@@ -118,6 +118,14 @@ public class DeclarationActivity extends AppCompatActivity {
         declarationViewModel.getGraduate().observe(this, graduate -> {
             if(graduate != null && graduate.data != null) {
                 this.graduate = graduate.data;
+                declarationViewModel.setIdForm(graduate.data.getIdForm());
+                declarationViewModel.getForm().observe(this, form -> {
+                    if(form != null && form.data != null) {
+                        Log.d("FormId", String.valueOf(form.data.getIdForm()));
+                        Log.d("FormName", String.valueOf(form.data.getFormName()));
+                        etForm.setText(form.data.getFormName());
+                    }
+                });
                 Log.d("Graduate_name_surname", String.format("%s %s", graduate.data.getName(), graduate.data.getSurname()));
                 //Log.d("Graduate_speciality", String.format("%s", graduate.data.getSpeciality()));
                 Log.d("Graduate_year", String.format("%s", graduate.data.getYearOfStudies()));

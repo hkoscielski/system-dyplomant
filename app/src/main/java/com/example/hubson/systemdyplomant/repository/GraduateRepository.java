@@ -5,7 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.hubson.systemdyplomant.repository.local.dao.FormOfStudiesDao;
 import com.example.hubson.systemdyplomant.repository.local.dao.GraduateDao;
+import com.example.hubson.systemdyplomant.repository.local.entity.FormOfStudies;
 import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
 import com.example.hubson.systemdyplomant.repository.remote.Webservice;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
@@ -20,19 +22,23 @@ public class GraduateRepository {
     private static GraduateRepository sInstance;
 
     private final GraduateDao graduateDao;
+    private final FormOfStudiesDao formOfStudiesDao;
     private final Webservice webservice;
     private final AppExecutors appExecutors;
 
-    private GraduateRepository(GraduateDao graduateDao, Webservice webservice, AppExecutors appExecutors) {
+    private GraduateRepository(GraduateDao graduateDao, FormOfStudiesDao formOfStudiesDao,
+                               Webservice webservice, AppExecutors appExecutors) {
         this.graduateDao = graduateDao;
+        this.formOfStudiesDao = formOfStudiesDao;
         this.webservice = webservice;
         this.appExecutors = appExecutors;
     }
 
-    public synchronized static GraduateRepository getInstance(GraduateDao graduateDao, Webservice webservice, AppExecutors executors) {
+    public synchronized static GraduateRepository getInstance(GraduateDao graduateDao, FormOfStudiesDao formOfStudiesDao,
+                                                              Webservice webservice, AppExecutors executors) {
         if (sInstance == null) {
             synchronized (LOCK) {
-                sInstance = new GraduateRepository(graduateDao, webservice, executors);
+                sInstance = new GraduateRepository(graduateDao, formOfStudiesDao, webservice, executors);
             }
         }
         return sInstance;
@@ -87,6 +93,33 @@ public class GraduateRepository {
             @Override
             protected LiveData<ApiResponse<GraduateResponse>> createCall() {
                 return webservice.getGraduate(idGraduate);
+            }
+        }.getAsLiveData();
+    }
+
+    public LiveData<Resource<FormOfStudies>> loadFormOfStudies(int idForm) {
+        return new NetworkBoundResource<FormOfStudies, FormOfStudies>(appExecutors) {
+
+            @Override
+            protected void saveCallResult(@NonNull FormOfStudies item) {
+                formOfStudiesDao.insert(item);
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<FormOfStudies> loadFromDb() {
+                return formOfStudiesDao.loadFormById(idForm);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable FormOfStudies data) {
+                return data == null;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<FormOfStudies>> createCall() {
+                return webservice.getFormOfStudies(idForm);
             }
         }.getAsLiveData();
     }

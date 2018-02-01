@@ -25,7 +25,8 @@ public class InjectorUtils {
         AppDatabase database = AppDatabase.getInstance(context.getApplicationContext());
         AppExecutors executors = AppExecutors.getInstance();
         Webservice webservice = WebserviceImpl.getInstance();
-        return GraduateRepository.getInstance(database.getGraduateDao(), webservice, executors);
+        return GraduateRepository.getInstance(database.getGraduateDao(), database.getFormOfStudiesDao(),
+                webservice, executors);
     }
 
     public static DeclarationRepository provideDeclarationRepository(Context context) {

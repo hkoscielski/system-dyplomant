@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 
 import com.example.hubson.systemdyplomant.repository.local.entity.Declaration;
 import com.example.hubson.systemdyplomant.repository.local.entity.DeclarationStatus;
+import com.example.hubson.systemdyplomant.repository.local.entity.FormOfStudies;
 import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
 import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.repository.local.entity.SubjectStatus;
@@ -37,6 +38,9 @@ public interface Webservice {
 
     @GET("graduate/read_one.php")
     LiveData<ApiResponse<GraduateResponse>> getGraduate(@Query("id_graduate") int idGraduate);
+
+    @GET("form_of_studies/read_one.php")
+    LiveData<ApiResponse<FormOfStudies>> getFormOfStudies(@Query("id_form") int idForm);
 
     @GET("subject/read.php")
     LiveData<ApiResponse<SubjectResponse>> getSubjects();
