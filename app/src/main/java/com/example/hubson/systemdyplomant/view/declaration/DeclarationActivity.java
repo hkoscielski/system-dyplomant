@@ -57,7 +57,7 @@ public class DeclarationActivity extends AppCompatActivity {
     EditText etSupervisorNames;
 
     @BindView(R.id.et_purpose_range)
-    EditText etPurposeRange;
+   EditText etPurposeRange;
 
     @BindView(R.id.et_short_desc)
     EditText etShortDesc;
@@ -127,12 +127,12 @@ public class DeclarationActivity extends AppCompatActivity {
                     }
                 });
                 Log.d("Graduate_name_surname", String.format("%s %s", graduate.data.getName(), graduate.data.getSurname()));
-                //Log.d("Graduate_speciality", String.format("%s", graduate.data.getSpeciality()));
+
                 Log.d("Graduate_year", String.format("%s", graduate.data.getYearOfStudies()));
                 etGraduateNames.setText(String.format("%s %s", graduate.data.getName(), graduate.data.getSurname()));
                 etStudentNo.setText(graduate.data.getStudentNo());
                 etSpeciality.setText(graduate.data.getSpeciality());
-                etYear.setText(graduate.data.getYearOfStudies().toString());
+                etYear.setText(String.format("%s", graduate.data.getYearOfStudies()));
             }
         });
     }
@@ -148,7 +148,7 @@ public class DeclarationActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.home:
+            case android.R.id.home:
                 showBackAlertDialog();
                 break;
             case R.id.item_send:
@@ -183,12 +183,8 @@ public class DeclarationActivity extends AppCompatActivity {
                 .setTitle("Udostępnienie deklaracji")
                 .setMessage("Czy na pewno chcesz udostępnić deklarację? Udostępniając ten dokument, deklarujesz chęć realizowanie pracy inżynierskiej o wybranym temacie.")
                 .setCancelable(false)
-                .setPositiveButton("Tak", (dialog, which) -> {
-                    saveDeclaration();
-                })
-                .setNegativeButton("Nie", (dialog, which) -> {
-
-                })
+                .setPositiveButton("Tak", (dialog, which) -> saveDeclaration())
+                .setNegativeButton("Nie", (dialog, which) -> {})
                 .create();
         alertDialog.show();
     }
@@ -198,12 +194,8 @@ public class DeclarationActivity extends AppCompatActivity {
                 .setTitle("Rezygnuj z deklaracji")
                 .setMessage("Czy na pewno chcesz zrezygnować z wypełnienia deklaracji? Pamiętaj, że wprowadzone dane nie zostaną zapamiętane.")
                 .setCancelable(false)
-                .setPositiveButton("Tak", (dialog, which) -> {
-                    finish();
-                })
-                .setNegativeButton("Nie", (dialog, which) -> {
-
-                })
+                .setPositiveButton("Tak", (dialog, which) -> finish())
+                .setNegativeButton("Nie", (dialog, which) -> {})
                 .create();
         alertDialog.show();
     }
@@ -244,9 +236,7 @@ public class DeclarationActivity extends AppCompatActivity {
                                 Log.e("update_graduate", "failed");
                             }
                         });
-                        Intent intent = new Intent(this, MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
+                        goToMainMenu();
                         showToast("Deklaracja została przyjęta pomyślnie");
                     } else {
                         showToast("Nie udało się udostępnić deklaracji. Sprawdź czy wszystkie dane zostały wprowadzone poprawnie");
@@ -256,7 +246,13 @@ public class DeclarationActivity extends AppCompatActivity {
         }
     }
 
-    public void showToast(String message) {
+    private void goToMainMenu() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    private void showToast(String message) {
         Toast.makeText(this.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

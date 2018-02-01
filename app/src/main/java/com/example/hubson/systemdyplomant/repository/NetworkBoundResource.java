@@ -6,7 +6,6 @@ import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
-import android.util.Log;
 
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
 import com.example.hubson.systemdyplomant.utils.AppExecutors;
@@ -50,7 +49,6 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
                     saveCallResult(processResponse(response));
                     appExecutors.mainThread().execute(() -> {
                         result.addSource(loadFromDb(), newData -> setValue(Resource.success(newData)));
-                        Log.i("Fetch", "OK");
                     });
                 });
             } else {

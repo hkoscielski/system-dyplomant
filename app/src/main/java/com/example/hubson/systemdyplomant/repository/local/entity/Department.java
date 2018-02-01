@@ -3,10 +3,8 @@ package com.example.hubson.systemdyplomant.repository.local.entity;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverter;
 import android.support.annotation.NonNull;
 
-import com.example.hubson.systemdyplomant.repository.local.converters.DateConverters;
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "Departments")

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.hubson.systemdyplomant">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".GraduateSystemApp"
@@ -28,7 +28,7 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.declaration.DeclarationActivity"></activity>
+        <activity android:name=".view.declaration.DeclarationActivity" />
     </application>
 
 </manifest>

@@ -27,9 +27,6 @@ public interface SubjectDao {
     @Query("SELECT * FROM Subjects WHERE id_subject=:idSubject")
     LiveData<Subject> loadSubjectById(final int idSubject);
 
-    @Query("SELECT * FROM Subjects WHERE id_subject=:idSupervisor")
-    LiveData<List<Subject>> findSubjectsForSupervisor(final int idSupervisor);
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<Subject> subjects);
 

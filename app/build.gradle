@@ -33,6 +33,7 @@ dependencies {
     implementation 'com.android.support:design:27.0.2'
     //Test
     testImplementation 'junit:junit:4.12'
+    androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     // ViewModel and LiveData with Java8 support for Lifecycles

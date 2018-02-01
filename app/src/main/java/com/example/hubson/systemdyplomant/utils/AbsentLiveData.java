@@ -7,7 +7,6 @@ public class AbsentLiveData extends LiveData {
         postValue(null);
     }
     public static <T> LiveData<T> create() {
-        //noinspection unchecked
         return new AbsentLiveData();
     }
 }

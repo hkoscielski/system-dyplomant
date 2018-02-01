@@ -2,22 +2,13 @@ package com.example.hubson.systemdyplomant.repository.local.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "Graduates"//, foreignKeys = {
-//        @ForeignKey(entity = Subject.class,
-//                parentColumns = "id_subject",
-//                childColumns = "subject_id"),
-//        @ForeignKey(entity = FormOfStudies.class,
-//                parentColumns = "id_form",
-//                childColumns = "id_form")
-//})
-)
+@Entity(tableName = "Graduates")
 public class Graduate {
     @SerializedName("id_graduate")
     @PrimaryKey

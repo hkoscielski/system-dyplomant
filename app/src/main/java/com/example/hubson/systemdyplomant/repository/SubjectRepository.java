@@ -16,7 +16,6 @@ import com.example.hubson.systemdyplomant.repository.local.dao.SubjectStatusDao;
 import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.repository.local.entity.SubjectStatus;
 import com.example.hubson.systemdyplomant.repository.remote.Webservice;
-import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectStatusResponse;
 
 import java.util.List;
@@ -118,11 +117,6 @@ public class SubjectRepository {
                 return subjectStatusDao.loadAllStatuses();
             }
 
-            @Override
-            protected void onFetchFailed() {
-                Log.e("loadAllSubjectStatuses", "Lipa panie");
-            }
-
             @NonNull
             @Override
             protected LiveData<ApiResponse<SubjectStatusResponse>> createCall() {
@@ -159,9 +153,7 @@ public class SubjectRepository {
     }
 
     public LiveData<ApiResponse<PostResponse>> updateSubject(Subject subject) {
-        appExecutors.diskIO().execute(() -> {
-            subjectDao.update(subject);
-        });
+        appExecutors.diskIO().execute(() -> subjectDao.update(subject));
         return webservice.updateSubject(subject);
     }
 }

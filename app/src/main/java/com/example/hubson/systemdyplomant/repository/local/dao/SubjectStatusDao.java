@@ -3,7 +3,6 @@ package com.example.hubson.systemdyplomant.repository.local.dao;
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
@@ -18,8 +17,8 @@ public interface SubjectStatusDao {
     @Query("SELECT * FROM Subject_Statuses")
     LiveData<List<SubjectStatus>> loadAllStatuses();
 
-    @Query("SELECT * FROM Subject_Statuses WHERE id_subject_status=:idSubjectStatus")
-    SubjectStatus loadStatusById(int idSubjectStatus);
+    @Query("SELECT * FROM Subject_Statuses")
+    List<SubjectStatus> findAllStatuses();
 
     @Query("SELECT * FROM Subject_Statuses WHERE status_name=:statusName")
     LiveData<SubjectStatus> loadStatusByName(String statusName);

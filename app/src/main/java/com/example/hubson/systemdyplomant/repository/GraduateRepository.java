@@ -48,6 +48,7 @@ public class GraduateRepository {
         return new NetworkBoundResource<List<Graduate>, GraduateResponse>(appExecutors) {
             @Override
             protected void saveCallResult(@NonNull GraduateResponse item) {
+                Log.e("graduate", String.valueOf(item.getResults() == null));
                 graduateDao.insertAll(item.getResults());
             }
 
@@ -55,11 +56,6 @@ public class GraduateRepository {
             @Override
             protected LiveData<List<Graduate>> loadFromDb() {
                 return graduateDao.loadAllGraduates();
-            }
-
-            @Override
-            protected void onFetchFailed() {
-                Log.e("loadAllGraduates", "Lipa panie");
             }
 
             @NonNull
@@ -125,9 +121,7 @@ public class GraduateRepository {
     }
 
     public LiveData<ApiResponse<PostResponse>> updateGraduate(Graduate graduate) {
-        appExecutors.diskIO().execute(() -> {
-            graduateDao.update(graduate);
-        });
+        appExecutors.diskIO().execute(() -> graduateDao.update(graduate));
         return webservice.updateGraduate(graduate);
     }
 }
