@@ -1,10 +1,13 @@
 package com.example.hubson.systemdyplomant.view.subjects;
 
+import android.app.SearchManager;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,12 +27,16 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
     @BindView(R.id.subject_list)
     RecyclerView subjectRecyclerView;
 
+    private SubjectListAdapter subjectListAdapter;
+    private SearchView searchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_list);
         ButterKnife.bind(this);
-        subjectRecyclerView.setAdapter(new SubjectListAdapter(this));
+        subjectListAdapter = new SubjectListAdapter(this);
+        subjectRecyclerView.setAdapter(subjectListAdapter);
         subjectRecyclerView.setHasFixedSize(true);
 
         SubjectListViewModelFactory factory = InjectorUtils.provideSubjectListActivityViewModelFactory(this.getApplicationContext());
@@ -53,6 +60,25 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_subject_list, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.item_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                subjectListAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                subjectListAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         return true;
     }
 
@@ -60,11 +86,22 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case R.id.item_search:
+                return true;
             case R.id.item_hide_taken:
                 //TODO akcja
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+            return;
+        }
+        super.onBackPressed();
     }
 
     @Override

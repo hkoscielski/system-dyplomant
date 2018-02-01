@@ -6,10 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.example.hubson.systemdyplomant.R;
 import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
+import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.repository.local.entity.SubjectStatus;
 import com.example.hubson.systemdyplomant.repository.local.entity.Supervisor;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoined;
@@ -20,7 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.ViewHolder> {
+public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.ViewHolder> implements Filterable {
     private List<SubjectJoined> subjects;
     private List<SubjectJoined> filteredSubjects;
     private final SubjectListCallback subjectListCallback;
@@ -39,7 +42,7 @@ public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.
 
     @Override
     public void onBindViewHolder(SubjectListAdapter.ViewHolder holder, int position) {
-        SubjectJoined subjectJoined = subjects.get(position);
+        SubjectJoined subjectJoined = filteredSubjects.get(position);
         SubjectStatus subjectStatus = subjectJoined.getSubjectStatus();
         Supervisor supervisor = subjectJoined.getSupervisor();
 
@@ -58,12 +61,45 @@ public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.
 
     @Override
     public int getItemCount() {
-        return subjects.size();
+        return filteredSubjects.size();
     }
 
     public void setData(List<SubjectJoined> subjects) {
         this.subjects = subjects;
+        this.filteredSubjects = subjects;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charString = constraint.toString();
+                if(charString.isEmpty()) {
+                    filteredSubjects = subjects;
+                } else {
+                    List<SubjectJoined> filteredList = new ArrayList<>();
+                    for(SubjectJoined subjectJoined : subjects) {
+                        if(subjectJoined.getSubjectPl().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(subjectJoined);
+                        }
+                    }
+
+                    filteredSubjects = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredSubjects;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filteredSubjects = (ArrayList<SubjectJoined>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
