@@ -9,9 +9,28 @@
         android:title="@string/item_search_title"
         app:showAsAction="ifRoom"
         app:actionViewClass="android.support.v7.widget.SearchView"/>
+
     <item
-        android:id="@+id/item_hide_taken"
-        android:title="@string/item_hide_taken_title"
-        android:checkable="true"
-        app:showAsAction="never"/>
+        android:id="@+id/item_sort"
+        android:title="Sortuj"
+        app:showAsAction="never">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/item_sort_subject_name"
+                    android:title="Wg tematu"
+                    app:showAsAction="never"/>
+                <item
+                    android:id="@+id/item_sort_supervisor_surname"
+                    android:title="Wg nazwiska promotora"
+                    app:showAsAction="never"/>
+            </group>
+            <item
+                android:id="@+id/item_hide_taken"
+                android:title="@string/item_hide_taken_title"
+                android:checkable="true"
+                app:showAsAction="never"/>
+        </menu>
+    </item>
+
 </menu>

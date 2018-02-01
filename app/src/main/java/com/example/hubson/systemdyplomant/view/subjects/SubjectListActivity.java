@@ -90,6 +90,12 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
         switch (id) {
             case R.id.item_search:
                 return true;
+            case R.id.item_sort_subject_name:
+                subjectListAdapter.sortBySubjectName();
+                break;
+            case R.id.item_sort_supervisor_surname:
+                subjectListAdapter.sortBySupervisorSurname();
+                break;
             case R.id.item_hide_taken:
                 if(takenUpHidden) {
                     takenUpHidden = false;

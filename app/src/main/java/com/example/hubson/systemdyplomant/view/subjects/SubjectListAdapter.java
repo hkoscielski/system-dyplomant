@@ -18,6 +18,8 @@ import com.example.hubson.systemdyplomant.repository.local.entity.Supervisor;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoined;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -83,6 +85,16 @@ public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.
 
     public void showAllSubjects() {
         filteredSubjects = subjects;
+        notifyDataSetChanged();
+    }
+
+    public void sortBySubjectName() {
+        Collections.sort(filteredSubjects, (s1, s2) -> s1.getSubjectPl().compareTo(s2.getSubjectPl()));
+        notifyDataSetChanged();
+    }
+
+    public void sortBySupervisorSurname() {
+        Collections.sort(filteredSubjects, (s1, s2) -> s1.getSupervisor().getSurname().compareTo(s2.getSupervisor().getSurname()));
         notifyDataSetChanged();
     }
 
