@@ -70,6 +70,22 @@ public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.
         notifyDataSetChanged();
     }
 
+    public void hideTakenUp() {
+        List<SubjectJoined> result = new ArrayList<>();
+        for(SubjectJoined subjectJoined : filteredSubjects) {
+            if(subjectJoined.getTakenUp() != subjectJoined.getLimit()) {
+                result.add(subjectJoined);
+            }
+        }
+        filteredSubjects = result;
+        notifyDataSetChanged();
+    }
+
+    public void showAllSubjects() {
+        filteredSubjects = subjects;
+        notifyDataSetChanged();
+    }
+
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -81,7 +97,9 @@ public class SubjectListAdapter extends RecyclerView.Adapter<SubjectListAdapter.
                 } else {
                     List<SubjectJoined> filteredList = new ArrayList<>();
                     for(SubjectJoined subjectJoined : subjects) {
-                        if(subjectJoined.getSubjectPl().toLowerCase().contains(charString.toLowerCase())) {
+                        if(subjectJoined.getSubjectPl().toLowerCase().contains(charString.toLowerCase())
+                                || subjectJoined.getSupervisor().getName().toLowerCase().contains(charString.toLowerCase())
+                                || subjectJoined.getSupervisor().getSurname().toLowerCase().contains((charString.toLowerCase()))) {
                             filteredList.add(subjectJoined);
                         }
                     }

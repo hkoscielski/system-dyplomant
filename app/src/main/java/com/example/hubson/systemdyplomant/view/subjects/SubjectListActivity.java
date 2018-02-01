@@ -30,6 +30,8 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
     private SubjectListAdapter subjectListAdapter;
     private SearchView searchView;
 
+    private boolean takenUpHidden = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +91,14 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
             case R.id.item_search:
                 return true;
             case R.id.item_hide_taken:
-                //TODO akcja
+                if(takenUpHidden) {
+                    takenUpHidden = false;
+                    subjectListAdapter.showAllSubjects();
+                } else {
+                    takenUpHidden = true;
+                    subjectListAdapter.hideTakenUp();
+                }
+                item.setChecked(takenUpHidden);
                 break;
         }
         return super.onOptionsItemSelected(item);
