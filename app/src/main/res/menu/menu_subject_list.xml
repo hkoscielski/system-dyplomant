@@ -25,12 +25,13 @@
                     android:title="Wg nazwiska promotora"
                     app:showAsAction="never"/>
             </group>
-            <item
-                android:id="@+id/item_hide_taken"
-                android:title="@string/item_hide_taken_title"
-                android:checkable="true"
-                app:showAsAction="never"/>
         </menu>
     </item>
+
+    <item
+        android:id="@+id/item_hide_taken"
+        android:title="@string/item_hide_taken_title"
+        android:checkable="true"
+        app:showAsAction="never"/>
 
 </menu>

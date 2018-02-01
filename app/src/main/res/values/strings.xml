@@ -19,6 +19,9 @@
     <string name="text_subject_list_text">Przeglądaj listę aktualnych tematów</string>
     <string name="text_my_documents_text">Przeglądaj dokumenty</string>
 
+    <!--activity_subject_list-->
+    <string name="load_subject_list_failed_text">"Nie udało się załadować tematów. Spróbuj ponownie za chwilę"</string>
+
     <!--activity_declaration-->
     <string name="text_graduate_label_text">Dane dyplomanta</string>
     <string name="et_graduate_names_text">et_graduate_names_text</string>

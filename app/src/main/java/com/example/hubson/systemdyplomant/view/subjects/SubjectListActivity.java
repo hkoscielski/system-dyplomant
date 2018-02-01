@@ -8,17 +8,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.hubson.systemdyplomant.R;
+import com.example.hubson.systemdyplomant.repository.Resource;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoined;
 import com.example.hubson.systemdyplomant.utils.InjectorUtils;
 import com.example.hubson.systemdyplomant.view.declaration.DeclarationActivity;
 import com.example.hubson.systemdyplomant.viewmodel.SubjectListViewModel;
 import com.example.hubson.systemdyplomant.viewmodel.SubjectListViewModelFactory;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +31,9 @@ import butterknife.ButterKnife;
 public class SubjectListActivity extends AppCompatActivity implements SubjectListCallback {
     @BindView(R.id.subject_list)
     RecyclerView subjectRecyclerView;
+
+    @BindView(R.id.pb_subject_list_loading)
+    ProgressBar pbLoading;
 
     private SubjectListAdapter subjectListAdapter;
     private SearchView searchView;
@@ -37,6 +45,7 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_list);
         ButterKnife.bind(this);
+
         subjectListAdapter = new SubjectListAdapter(this);
         subjectRecyclerView.setAdapter(subjectListAdapter);
         subjectRecyclerView.setHasFixedSize(true);
@@ -44,18 +53,8 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
         SubjectListViewModelFactory factory = InjectorUtils.provideSubjectListActivityViewModelFactory(this.getApplicationContext());
         SubjectListViewModel subjectListViewModel = ViewModelProviders.of(this, factory).get(SubjectListViewModel.class);
 
-        subjectListViewModel.getGraduates().observe(this, graduates -> {
-            if(graduates != null && graduates.data != null) {
-                Log.i("SubjectListActivity", "Obserwujemy " + graduates.data.size() + " dyplomantów");
-            }
-        });
-        subjectListViewModel.getSubjectsJoined().observe(this, subjects -> {
-            if (subjects != null && subjects.data != null) {
-                if (subjectRecyclerView.getAdapter() != null && subjectRecyclerView.getAdapter() instanceof SubjectListAdapter) {
-                    ((SubjectListAdapter) subjectRecyclerView.getAdapter()).setData(subjects.data);
-                }
-            }
-        });
+        subjectListViewModel.getGraduates().observe(this, graduates -> {});
+        subjectListViewModel.getSubjectsJoined().observe(this, this::processResource);
     }
 
     @Override
@@ -90,12 +89,15 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
         switch (id) {
             case R.id.item_search:
                 return true;
+
             case R.id.item_sort_subject_name:
                 subjectListAdapter.sortBySubjectName();
                 break;
+
             case R.id.item_sort_supervisor_surname:
                 subjectListAdapter.sortBySupervisorSurname();
                 break;
+
             case R.id.item_hide_taken:
                 if(takenUpHidden) {
                     takenUpHidden = false;
@@ -132,10 +134,41 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
                 .setPositiveButton("Tak", (dialog, which) -> {
                     startActivity(DeclarationActivity.newIntent(this, subjectJoined.getIdSubject(), subjectJoined.getIdSupervisor()));
                 })
-                .setNegativeButton("Nie", (dialog, which) -> {
-
-                })
+                .setNegativeButton("Nie", (dialog, which) -> {})
                 .create();
         alertDialog.show();
+    }
+
+    private void processResource(Resource<List<SubjectJoined>> resource) {
+        switch (resource.status) {
+            case LOADING:
+                renderLoadingState();
+                break;
+
+            case SUCCESS:
+                renderDataState(resource.data);
+                break;
+
+            case ERROR:
+                renderErrorState();
+                break;
+        }
+    }
+
+    private void renderLoadingState() {
+        subjectRecyclerView.setVisibility(View.GONE);
+        pbLoading.setVisibility(View.VISIBLE);
+    }
+
+    private void renderDataState(List<SubjectJoined> subjectsJoined) {
+        subjectRecyclerView.setVisibility(View.VISIBLE);
+        pbLoading.setVisibility(View.GONE);
+        subjectListAdapter.setData(subjectsJoined);
+    }
+
+    private void renderErrorState() {
+        subjectRecyclerView.setVisibility(View.GONE);
+        pbLoading.setVisibility(View.GONE);
+        Toast.makeText(this, R.string.load_subject_list_failed_text, Toast.LENGTH_SHORT).show();
     }
 }
