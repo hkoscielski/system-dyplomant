@@ -6,6 +6,7 @@ import com.example.hubson.systemdyplomant.repository.local.entity.Declaration;
 import com.example.hubson.systemdyplomant.repository.local.entity.DeclarationStatus;
 import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
 import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
+import com.example.hubson.systemdyplomant.repository.local.entity.SubjectStatus;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.DeclarationStatusResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.GraduateResponse;
@@ -48,6 +49,9 @@ public interface Webservice {
 
     @GET("subject_status/read.php")
     LiveData<ApiResponse<SubjectStatusResponse>> getSubjectStatuses();
+
+    @GET("subject_status/read_one.php")
+    LiveData<ApiResponse<SubjectStatus>> getSubjectStatus(@Query("status_name") String statusName);
 
     @GET("supervisor/read_one.php")
     LiveData<ApiResponse<SupervisorResponse>> getSupervisor(@Query("id_supervisor") int idSupervisor);

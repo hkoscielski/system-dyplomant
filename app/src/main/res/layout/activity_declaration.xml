@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/et_student_no"
                 android:enabled="false"
-                android:text="@string/et_speciality"/>
+                android:text="@string/et_speciality_text"/>
 
             <View android:id="@+id/view_fake"
                 android:layout_width="0dp"
@@ -71,7 +71,7 @@
                 android:layout_alignEnd="@id/view_fake"
                 android:layout_alignParentStart="true"
                 android:enabled="false"
-                android:text="@string/et_form"/>
+                android:text="@string/et_form_text"/>
 
             <EditText
                 android:id="@+id/et_year"
@@ -81,7 +81,7 @@
                 android:layout_alignStart="@id/view_fake"
                 android:layout_alignParentEnd="true"
                 android:enabled="false"
-                android:text="@string/et_speciality"/>
+                android:text="@string/et_year_text"/>
 
         </RelativeLayout>
 

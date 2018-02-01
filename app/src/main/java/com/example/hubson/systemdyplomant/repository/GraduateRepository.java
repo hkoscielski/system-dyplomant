@@ -10,6 +10,7 @@ import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
 import com.example.hubson.systemdyplomant.repository.remote.Webservice;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.GraduateResponse;
+import com.example.hubson.systemdyplomant.repository.remote.response_model.PostResponse;
 import com.example.hubson.systemdyplomant.utils.AppExecutors;
 
 import java.util.List;
@@ -88,5 +89,12 @@ public class GraduateRepository {
                 return webservice.getGraduate(idGraduate);
             }
         }.getAsLiveData();
+    }
+
+    public LiveData<ApiResponse<PostResponse>> updateGraduate(Graduate graduate) {
+        appExecutors.diskIO().execute(() -> {
+            graduateDao.update(graduate);
+        });
+        return webservice.updateGraduate(graduate);
     }
 }

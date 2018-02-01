@@ -14,6 +14,7 @@ import com.example.hubson.systemdyplomant.repository.local.entity.Declaration;
 import com.example.hubson.systemdyplomant.repository.local.entity.DeclarationStatus;
 import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
 import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
+import com.example.hubson.systemdyplomant.repository.local.entity.SubjectStatus;
 import com.example.hubson.systemdyplomant.repository.local.entity.Supervisor;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.PostResponse;
@@ -25,18 +26,24 @@ public class DeclarationViewModel extends ViewModel {
     private final MutableLiveData<Integer> idSupervisor = new MutableLiveData<>();
     private final MutableLiveData<Integer> idSubject = new MutableLiveData<>();
     private final MutableLiveData<String> declarationStatusName = new MutableLiveData<>();
+    private final MutableLiveData<String> subjectStatusName = new MutableLiveData<>();
     private final MutableLiveData<Integer> idGraduate = new MutableLiveData<>();
 
     private LiveData<Resource<Supervisor>> supervisor = new MutableLiveData<>();
     private LiveData<Resource<Subject>> subject = new MutableLiveData<>();
     private LiveData<Resource<DeclarationStatus>> declarationStatus = new MutableLiveData<>();
+    private LiveData<Resource<SubjectStatus>> subjectStatus = new MutableLiveData<>();
     private LiveData<Resource<Graduate>> graduate = new MutableLiveData<>();
 
     private DeclarationRepository declarationRepository;
+    private SubjectRepository subjectRepository;
+    private GraduateRepository graduateRepository;
 
     public DeclarationViewModel(SupervisorRepository supervisorRepository, DeclarationRepository declarationRepository,
                                 SubjectRepository subjectRepository, GraduateRepository graduateRepository) {
         this.declarationRepository = declarationRepository;
+        this.subjectRepository = subjectRepository;
+        this.graduateRepository = graduateRepository;
 
         supervisor = Transformations.switchMap(idSupervisor, idSupervisor -> {
             if(idSupervisor == null) {
@@ -57,6 +64,13 @@ public class DeclarationViewModel extends ViewModel {
                 return AbsentLiveData.create();
             } else {
                 return declarationRepository.loadDeclarationStatus(statusName);
+            }
+        });
+        subjectStatus = Transformations.switchMap(subjectStatusName, statusName -> {
+            if(statusName == null) {
+                return AbsentLiveData.create();
+            } else {
+                return subjectRepository.loadSubjectStatus(statusName);
             }
         });
         graduate = Transformations.switchMap(idGraduate, idGraduate -> {
@@ -89,6 +103,13 @@ public class DeclarationViewModel extends ViewModel {
         this.declarationStatusName.setValue(statusName);
     }
 
+    public void setSubjectStatusName(String statusName) {
+        if (Objects.equals(this.subjectStatusName.getValue(), statusName)) {
+            return;
+        }
+        this.subjectStatusName.setValue(statusName);
+    }
+
     public void setIdGraduate(Integer idGraduate) {
         if (Objects.equals(this.idGraduate.getValue(), idGraduate)) {
             return;
@@ -108,11 +129,23 @@ public class DeclarationViewModel extends ViewModel {
         return declarationStatus;
     }
 
+    public LiveData<Resource<SubjectStatus>> getSubjectStatus() {
+        return subjectStatus;
+    }
+
     public LiveData<Resource<Graduate>> getGraduate() {
         return graduate;
     }
 
     public LiveData<ApiResponse<PostResponse>> createDeclaration(Declaration declaration) {
         return declarationRepository.saveDeclaration(declaration);
+    }
+
+    public LiveData<ApiResponse<PostResponse>> updateSubject(Subject subject) {
+        return subjectRepository.updateSubject(subject);
+    }
+
+    public LiveData<ApiResponse<PostResponse>> updateGraduate(Graduate graduate) {
+        return graduateRepository.updateGraduate(graduate);
     }
 }

@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.hubson.systemdyplomant.repository.local.dao.SupervisorDao;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
+import com.example.hubson.systemdyplomant.repository.remote.response_model.PostResponse;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoined;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoinedResponse;
 import com.example.hubson.systemdyplomant.utils.AppExecutors;
@@ -128,5 +129,39 @@ public class SubjectRepository {
                 return webservice.getSubjectStatuses();
             }
         }.getAsLiveData();
+    }
+
+    public LiveData<Resource<SubjectStatus>> loadSubjectStatus(String statusName) {
+        return new NetworkBoundResource<SubjectStatus, SubjectStatus>(appExecutors) {
+
+            @Override
+            protected void saveCallResult(@NonNull SubjectStatus item) {
+                subjectStatusDao.insert(item);
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<SubjectStatus> loadFromDb() {
+                return subjectStatusDao.loadStatusByName(statusName);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable SubjectStatus data) {
+                return data == null;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<SubjectStatus>> createCall() {
+                return webservice.getSubjectStatus(statusName);
+            }
+        }.getAsLiveData();
+    }
+
+    public LiveData<ApiResponse<PostResponse>> updateSubject(Subject subject) {
+        appExecutors.diskIO().execute(() -> {
+            subjectDao.update(subject);
+        });
+        return webservice.updateSubject(subject);
     }
 }
