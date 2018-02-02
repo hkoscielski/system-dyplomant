@@ -67,11 +67,11 @@ public class GraduateRepository {
     }
 
     public LiveData<Resource<Graduate>> loadGraduate(int idGraduate) {
-        return new NetworkBoundResource<Graduate, GraduateResponse>(appExecutors) {
+        return new NetworkBoundResource<Graduate, Graduate>(appExecutors) {
 
             @Override
-            protected void saveCallResult(@NonNull GraduateResponse item) {
-                graduateDao.insertAll(item.getResults());
+            protected void saveCallResult(@NonNull Graduate item) {
+                graduateDao.insert(item);
             }
 
             @NonNull
@@ -87,8 +87,35 @@ public class GraduateRepository {
 
             @NonNull
             @Override
-            protected LiveData<ApiResponse<GraduateResponse>> createCall() {
+            protected LiveData<ApiResponse<Graduate>> createCall() {
                 return webservice.getGraduate(idGraduate);
+            }
+        }.getAsLiveData();
+    }
+
+    public LiveData<Resource<Graduate>> loadGraduate(String studentNo) {
+        return new NetworkBoundResource<Graduate, Graduate>(appExecutors) {
+
+            @Override
+            protected void saveCallResult(@NonNull Graduate item) {
+                graduateDao.insert(item);
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<Graduate> loadFromDb() {
+                return graduateDao.loadGraduateByStudentNo(studentNo);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable Graduate data) {
+                return data == null;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<Graduate>> createCall() {
+                return webservice.getGraduate(studentNo);
             }
         }.getAsLiveData();
     }

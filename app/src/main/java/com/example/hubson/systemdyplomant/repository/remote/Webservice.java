@@ -37,7 +37,10 @@ public interface Webservice {
     LiveData<ApiResponse<GraduateResponse>> getGraduates();
 
     @GET("graduate/read_one.php")
-    LiveData<ApiResponse<GraduateResponse>> getGraduate(@Query("id_graduate") int idGraduate);
+    LiveData<ApiResponse<Graduate>> getGraduate(@Query("id_graduate") int idGraduate);
+
+    @GET("graduate/read_user.php")
+    LiveData<ApiResponse<Graduate>> getGraduate(@Query("student_no") String studentNo);
 
     @GET("form_of_studies/read_one.php")
     LiveData<ApiResponse<FormOfStudies>> getFormOfStudies(@Query("id_form") int idForm);

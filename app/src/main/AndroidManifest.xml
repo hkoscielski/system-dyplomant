@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.main.MainActivity">
+        <activity android:name=".view.main.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,6 +29,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.declaration.DeclarationActivity" />
+        <activity android:name=".view.main.MainActivity"></activity>
     </application>
 
 </manifest>

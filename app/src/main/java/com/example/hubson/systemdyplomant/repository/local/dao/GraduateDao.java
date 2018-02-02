@@ -20,6 +20,9 @@ public interface GraduateDao {
     @Query("SELECT * FROM Graduates WHERE id_graduate=:idGraduate")
     LiveData<Graduate> loadGraduateById(final int idGraduate);
 
+    @Query("SELECT * FROM Graduates WHERE student_no=:studentNo")
+    LiveData<Graduate> loadGraduateByStudentNo(final String studentNo);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<Graduate> graduates);
 

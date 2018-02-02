@@ -13,6 +13,9 @@
     <string name="text_creators_text">text_creators_text</string>
     <string name="btn_choose_text">Wybierz</string>
 
+    <!--activity_login-->
+    <string name="load_user_failed_text">Nie znaleziono dyplomanta</string>
+
     <!--activity_main-->
     <string name="text_my_subject_text">Mój temat</string>
     <string name="text_change_text">Zmień temat lub promotora</string>

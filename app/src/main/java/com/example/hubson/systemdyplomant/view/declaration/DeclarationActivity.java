@@ -57,7 +57,7 @@ public class DeclarationActivity extends AppCompatActivity {
     EditText etSupervisorNames;
 
     @BindView(R.id.et_purpose_range)
-   EditText etPurposeRange;
+    EditText etPurposeRange;
 
     @BindView(R.id.et_short_desc)
     EditText etShortDesc;

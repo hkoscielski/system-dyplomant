@@ -11,6 +11,7 @@ import com.example.hubson.systemdyplomant.repository.remote.Webservice;
 import com.example.hubson.systemdyplomant.repository.remote.WebserviceImpl;
 import com.example.hubson.systemdyplomant.viewmodel.DeclarationViewModelFactory;
 import com.example.hubson.systemdyplomant.viewmodel.SubjectListViewModelFactory;
+import com.example.hubson.systemdyplomant.viewmodel.UserViewModelFactory;
 
 public class InjectorUtils {
     public static SubjectRepository provideSubjectRepository(Context context) {
@@ -56,5 +57,10 @@ public class InjectorUtils {
         SubjectRepository subjectRepository = provideSubjectRepository(context.getApplicationContext());
         GraduateRepository graduateRepository = provideGraduateRepository(context.getApplicationContext());
         return new DeclarationViewModelFactory(supervisorRepository, declarationRepository, subjectRepository, graduateRepository);
+    }
+
+    public static UserViewModelFactory provideUserViewModelFactory(Context context) {
+        GraduateRepository graduateRepository = provideGraduateRepository(context.getApplicationContext());
+        return new UserViewModelFactory(graduateRepository);
     }
 }

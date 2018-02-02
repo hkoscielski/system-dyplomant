@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.hubson.systemdyplomant.R;
+import com.example.hubson.systemdyplomant.utils.SessionManager;
 import com.example.hubson.systemdyplomant.view.subjects.SubjectListActivity;
 
 import butterknife.ButterKnife;
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        SessionManager sessionManager = SessionManager.getInstance(this.getApplicationContext());
+        sessionManager.setLogin(false);
     }
 
     @Override
