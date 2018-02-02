@@ -34,4 +34,7 @@ public interface GraduateDao {
 
     @Delete
     void delete(Graduate graduate);
+
+    @Query("DELETE FROM Graduates")
+    void deleteAll();
 }

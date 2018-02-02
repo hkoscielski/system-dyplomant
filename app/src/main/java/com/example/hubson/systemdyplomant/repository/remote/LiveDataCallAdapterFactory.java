@@ -2,7 +2,6 @@ package com.example.hubson.systemdyplomant.repository.remote;
 
 import android.arch.lifecycle.LiveData;
 
-import com.example.hubson.systemdyplomant.repository.remote.LiveDataCallAdapter;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.ApiResponse;
 
 import java.lang.annotation.Annotation;

@@ -23,4 +23,7 @@ public interface FormOfStudiesDao {
 
     @Delete
     void delete(FormOfStudies formOfStudies);
+
+    @Query("DELETE FROM Forms_Of_Studies")
+    void deleteAll();
 }

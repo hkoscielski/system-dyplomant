@@ -14,6 +14,9 @@
     <string name="btn_choose_text">Wybierz</string>
 
     <!--activity_login-->
+    <string name="et_login_hint">Numer indeksu</string>
+    <string name="et_password_hint">Hasło</string>
+    <string name="btn_log_in_text">Zaloguj się</string>
     <string name="load_user_failed_text">Nie znaleziono dyplomanta</string>
 
     <!--activity_main-->

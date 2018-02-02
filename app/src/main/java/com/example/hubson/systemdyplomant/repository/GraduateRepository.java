@@ -3,7 +3,6 @@ package com.example.hubson.systemdyplomant.repository;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.example.hubson.systemdyplomant.repository.local.dao.FormOfStudiesDao;
 import com.example.hubson.systemdyplomant.repository.local.dao.GraduateDao;

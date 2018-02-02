@@ -32,4 +32,7 @@ public interface DeclarationStatusDao {
 
     @Delete
     void delete(DeclarationStatus declarationStatus);
+
+    @Query("DELETE FROM Declaration_Statuses")
+    void deleteAll();
 }

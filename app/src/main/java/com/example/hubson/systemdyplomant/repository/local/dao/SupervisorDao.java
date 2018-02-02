@@ -28,4 +28,7 @@ public interface SupervisorDao {
 
     @Delete
     void delete(Supervisor supervisor);
+
+    @Query("DELETE FROM Supervisors")
+    void deleteAll();
 }

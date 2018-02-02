@@ -30,8 +30,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@color/white"
-            android:hint="Numer indeksu"
-            android:inputType="textEmailAddress"
+            android:hint="@string/et_login_hint"
+            android:inputType="numberDecimal"
+            android:maxLength="6"
             android:padding="10dp"
             android:singleLine="true"/>
 
@@ -41,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@color/white"
-            android:hint="Hasło"
+            android:hint="@string/et_password_hint"
             android:inputType="textPassword"
             android:padding="10dp"
             android:singleLine="true"/>
@@ -51,15 +52,16 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Zaloguj się"/>
+            android:text="@string/btn_log_in_text"/>
 
         <ProgressBar
             android:id="@+id/pb_login_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone"
-         />
+            android:indeterminateTint="@color/white"
+            android:indeterminateTintMode="src_in"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

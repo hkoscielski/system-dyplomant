@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/text_subject_title"
                 android:layout_toEndOf="@id/text_subject_title"
+                android:layout_marginStart="5dp"
                 android:text="@string/text_subject_text"/>
 
             <TextView
@@ -48,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/text_supervisor_title"
                 android:layout_toEndOf="@id/text_supervisor_title"
+                android:layout_marginStart="5dp"
                 android:text="@string/text_supervisor_text"/>
 
         </RelativeLayout>
@@ -78,6 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/text_subject_status"
                 android:layout_toEndOf="@+id/text_creator_title"
+                android:layout_marginStart="5dp"
                 android:text="@string/text_taken_up_text" />
 
             <TextView

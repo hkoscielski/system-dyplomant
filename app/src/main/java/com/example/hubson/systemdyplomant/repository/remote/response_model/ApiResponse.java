@@ -22,7 +22,6 @@ public class ApiResponse<T> {
 
     public ApiResponse(Response<T> response) {
         code = response.code();
-        //message = (String) response.body();
         if(response.isSuccessful()) {
             body = response.body();
             errorMessage = null;

@@ -28,7 +28,7 @@ public class SessionManager {
 
     public void setLogin(boolean isLoggedIn) {
         sessionData.edit().putBoolean(KEY_IS_LOGGEDIN, isLoggedIn).apply();
-        if(isLoggedIn == false) sessionData.edit().remove(KEY_STUDENT_ID).apply();
+        if(!isLoggedIn) sessionData.edit().remove(KEY_STUDENT_ID).apply();
     }
 
     public boolean isLoggedIn(){
