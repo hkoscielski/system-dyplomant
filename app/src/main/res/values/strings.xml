@@ -43,6 +43,7 @@
 
     <!--menu_main-->
     <string name="item_account_title">Konto</string>
+    <string name="item_logout_title">Wyloguj</string>
     <string name="item_about_title">O aplikacji</string>
 
     <!--menu_subject_list-->

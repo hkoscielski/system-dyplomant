@@ -21,8 +21,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        //SessionManager sessionManager = SessionManager.getInstance(this.getApplicationContext());
-        //sessionManager.setLogin(false);
     }
 
     @Override
@@ -36,11 +34,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.item_account:
-                //TODO akcja
-                break;
-            case R.id.item_about:
-                //TODO akcja
+            case R.id.item_logout:
+                logout();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -50,5 +45,12 @@ public class MainActivity extends AppCompatActivity {
     public void goToMySubject() {
         Intent intent = new Intent(this, SubjectListActivity.class);
         startActivity(intent);
+    }
+
+    public void logout() {
+        SessionManager.getInstance(this.getApplicationContext()).setLogin(false);
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

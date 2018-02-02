@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
         UserViewModelFactory userViewModelFactory = InjectorUtils.provideUserViewModelFactory(this.getApplicationContext());
         userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
-        userViewModel.getGraduate().observe(this, this::processResource);
+        userViewModel.getGraduateByNo().observe(this, this::processResource);
     }
 
     @OnClick(R.id.btn_login)

@@ -14,7 +14,6 @@ import java.util.Objects;
 
 public class UserViewModel extends ViewModel{
     private final MutableLiveData<String> studentNo = new MutableLiveData<>();
-
     private final LiveData<Resource<Graduate>> graduate;
 
     public UserViewModel(GraduateRepository graduateRepository) {
@@ -34,7 +33,7 @@ public class UserViewModel extends ViewModel{
         this.studentNo.setValue(studentNo);
     }
 
-    public LiveData<Resource<Graduate>> getGraduate() {
+    public LiveData<Resource<Graduate>> getGraduateByNo() {
         return graduate;
     }
 }
