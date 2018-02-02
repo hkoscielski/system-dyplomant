@@ -1,10 +1,11 @@
-package com.example.hubson.systemdyplomant.repository.local;
+package com.example.hubson.systemdyplomant;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.example.hubson.systemdyplomant.repository.local.AppDatabase;
 import com.example.hubson.systemdyplomant.repository.local.dao.SubjectStatusDao;
 import com.example.hubson.systemdyplomant.repository.local.entity.SubjectStatus;
 
