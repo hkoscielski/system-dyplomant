@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -95,6 +96,14 @@ public class LoginActivity extends AppCompatActivity {
         pbLoginLoading.setVisibility(View.GONE);
         sessionManager.setLogin(true);
         sessionManager.setUserId(graduate.getIdGraduate());
+        Log.e("id_graduate", String.valueOf(graduate.getIdGraduate()));
+        Log.e("id_subject", String.valueOf(graduate.getIdSubject()));
+        Log.e("name", String.valueOf(graduate.getName()));
+        Log.e("surname", String.valueOf(graduate.getSurname()));
+        Log.e("student_no", String.valueOf(graduate.getStudentNo()));
+        Log.e("speciality", String.valueOf(graduate.getSpeciality()));
+        Log.e("id_form", String.valueOf(graduate.getIdForm()));
+        Log.e("year_of_studies", String.valueOf(graduate.getYearOfStudies()));
         goToMainActivity();
     }
 

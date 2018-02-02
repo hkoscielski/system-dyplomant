@@ -17,8 +17,10 @@ import android.widget.Toast;
 
 import com.example.hubson.systemdyplomant.R;
 import com.example.hubson.systemdyplomant.repository.Resource;
+import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
 import com.example.hubson.systemdyplomant.repository.remote.response_model.SubjectJoined;
 import com.example.hubson.systemdyplomant.utils.InjectorUtils;
+import com.example.hubson.systemdyplomant.utils.SessionManager;
 import com.example.hubson.systemdyplomant.view.declaration.DeclarationActivity;
 import com.example.hubson.systemdyplomant.viewmodel.SubjectListViewModel;
 import com.example.hubson.systemdyplomant.viewmodel.SubjectListViewModelFactory;
@@ -37,7 +39,7 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
 
     private SubjectListAdapter subjectListAdapter;
     private SearchView searchView;
-
+    private Graduate graduate;
     private boolean takenUpHidden = false;
 
     @Override
@@ -45,7 +47,6 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_list);
         ButterKnife.bind(this);
-
         subjectListAdapter = new SubjectListAdapter(this);
         subjectRecyclerView.setAdapter(subjectListAdapter);
         subjectRecyclerView.setHasFixedSize(true);
@@ -54,6 +55,12 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
         SubjectListViewModel subjectListViewModel = ViewModelProviders.of(this, factory).get(SubjectListViewModel.class);
 
         subjectListViewModel.getGraduates().observe(this, graduates -> {});
+        subjectListViewModel.setIdGraduate(SessionManager.getInstance(this.getApplicationContext()).getUserId());
+        subjectListViewModel.getGraduate().observe(this, graduate -> {
+            if(graduate != null && graduate.data != null) {
+                this.graduate = graduate.data;
+            }
+        });
         subjectListViewModel.getSubjectsJoined().observe(this, this::processResource);
     }
 
@@ -132,7 +139,11 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
                 .setMessage("Czy na pewno chcesz wybrać ten temat do realizacji? Wybierasz temat: \"" + subjectJoined.getSubjectPl() + "\"")
                 .setCancelable(false)
                 .setPositiveButton("Tak", (dialog, which) -> {
-                    startActivity(DeclarationActivity.newIntent(this, subjectJoined.getIdSubject(), subjectJoined.getIdSupervisor()));
+                    if(graduate.getIdSubject() == null) {
+                        startActivity(DeclarationActivity.newIntent(this, subjectJoined.getIdSubject(), subjectJoined.getIdSupervisor()));
+                    } else {
+                        showToast(R.string.choose_subject_failed);
+                    }
                 })
                 .setNegativeButton("Nie", (dialog, which) -> {})
                 .create();
@@ -169,6 +180,10 @@ public class SubjectListActivity extends AppCompatActivity implements SubjectLis
     private void renderErrorState() {
         subjectRecyclerView.setVisibility(View.GONE);
         pbLoading.setVisibility(View.GONE);
-        Toast.makeText(this, R.string.load_subject_list_failed_text, Toast.LENGTH_SHORT).show();
+        showToast(R.string.load_subject_list_failed_text);
+    }
+
+    private void showToast(int stringResId) {
+        Toast.makeText(this, stringResId, Toast.LENGTH_SHORT).show();
     }
 }

@@ -21,8 +21,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        SessionManager sessionManager = SessionManager.getInstance(this.getApplicationContext());
-        sessionManager.setLogin(false);
+        //SessionManager sessionManager = SessionManager.getInstance(this.getApplicationContext());
+        //sessionManager.setLogin(false);
     }
 
     @Override

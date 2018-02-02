@@ -48,6 +48,7 @@
     <!--menu_subject_list-->
     <string name="item_search_title">Szukaj</string>
     <string name="item_hide_taken_title">Ukryj zajęte</string>
+    <string name="choose_subject_failed">Nie można wybrać tematu, jeśli inny został wcześniej wybrany</string>
 
     <!--menu_declaration-->
     <string name="item_send_title">Udostępnij</string>

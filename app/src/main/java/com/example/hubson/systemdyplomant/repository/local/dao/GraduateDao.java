@@ -20,7 +20,7 @@ public interface GraduateDao {
     @Query("SELECT * FROM Graduates WHERE id_graduate=:idGraduate")
     LiveData<Graduate> loadGraduateById(final int idGraduate);
 
-    @Query("SELECT * FROM Graduates WHERE student_no=:studentNo")
+    @Query("SELECT * FROM Graduates WHERE student_no=:studentNo LIMIT 1")
     LiveData<Graduate> loadGraduateByStudentNo(final String studentNo);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

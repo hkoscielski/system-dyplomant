@@ -20,6 +20,7 @@ import com.example.hubson.systemdyplomant.repository.local.entity.Graduate;
 import com.example.hubson.systemdyplomant.repository.local.entity.Subject;
 import com.example.hubson.systemdyplomant.repository.local.entity.SubjectStatus;
 import com.example.hubson.systemdyplomant.utils.InjectorUtils;
+import com.example.hubson.systemdyplomant.utils.SessionManager;
 import com.example.hubson.systemdyplomant.view.main.MainActivity;
 import com.example.hubson.systemdyplomant.viewmodel.DeclarationViewModel;
 import com.example.hubson.systemdyplomant.viewmodel.DeclarationViewModelFactory;
@@ -62,6 +63,7 @@ public class DeclarationActivity extends AppCompatActivity {
     @BindView(R.id.et_short_desc)
     EditText etShortDesc;
 
+    private SessionManager sessionManager;
     private DeclarationViewModel declarationViewModel;
     private Subject subject;
     private SubjectStatus subjectStatus;
@@ -71,7 +73,6 @@ public class DeclarationActivity extends AppCompatActivity {
 
     private static final String KEY_SUBJECT_ID = "key_subject_id";
     private static final String KEY_SUPERVISOR_ID = "key_supervisor_id";
-    private static final int TEMP_ID_GRADUATE = 13;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +115,8 @@ public class DeclarationActivity extends AppCompatActivity {
                 Log.d("DeclarationStatus_name", String.valueOf(status.data.getStatusName()));
             }
         });
-        declarationViewModel.setIdGraduate(TEMP_ID_GRADUATE);
+        sessionManager = SessionManager.getInstance(this.getApplicationContext());
+        declarationViewModel.setIdGraduate(sessionManager.getUserId());
         declarationViewModel.getGraduate().observe(this, graduate -> {
             if(graduate != null && graduate.data != null) {
                 this.graduate = graduate.data;
@@ -211,7 +213,7 @@ public class DeclarationActivity extends AppCompatActivity {
             etPurposeRange.setText("");
             etShortDesc.setText("");
         } else {
-            Declaration declaration = new Declaration(idSubject, TEMP_ID_GRADUATE, language, purposeRange, shortDesc, null, null, idDeclarationStatus);
+            Declaration declaration = new Declaration(idSubject, sessionManager.getUserId(), language, purposeRange, shortDesc, null, null, idDeclarationStatus);
             declarationViewModel.createDeclaration(declaration).observe(this, response -> {
                 if(response != null && response.body != null) {
                     if(response.body.getSuccess()) {

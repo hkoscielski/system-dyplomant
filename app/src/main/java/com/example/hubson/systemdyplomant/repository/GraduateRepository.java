@@ -48,7 +48,6 @@ public class GraduateRepository {
         return new NetworkBoundResource<List<Graduate>, GraduateResponse>(appExecutors) {
             @Override
             protected void saveCallResult(@NonNull GraduateResponse item) {
-                Log.e("graduate", String.valueOf(item.getResults() == null));
                 graduateDao.insertAll(item.getResults());
             }
 
