@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -105,14 +104,12 @@ public class DeclarationActivity extends AppCompatActivity {
         declarationViewModel.getSubjectStatus().observe(this, status -> {
             if(status != null && status.data != null) {
                 this.subjectStatus = status.data;
-                Log.d("SubjectStatus", subjectStatus.getStatusName());
             }
         });
         declarationViewModel.setDeclarationStatusName("Złożona");
         declarationViewModel.getDeclarationStatus().observe(this, status -> {
             if(status != null && status.data != null) {
                 this.idDeclarationStatus = status.data.getIdDeclarationStatus();
-                Log.d("DeclarationStatus_name", String.valueOf(status.data.getStatusName()));
             }
         });
         sessionManager = SessionManager.getInstance(this.getApplicationContext());
@@ -123,14 +120,9 @@ public class DeclarationActivity extends AppCompatActivity {
                 declarationViewModel.setIdForm(graduate.data.getIdForm());
                 declarationViewModel.getForm().observe(this, form -> {
                     if(form != null && form.data != null) {
-                        Log.d("FormId", String.valueOf(form.data.getIdForm()));
-                        Log.d("FormName", String.valueOf(form.data.getFormName()));
                         etForm.setText(form.data.getFormName());
                     }
                 });
-                Log.d("Graduate_name_surname", String.format("%s %s", graduate.data.getName(), graduate.data.getSurname()));
-
-                Log.d("Graduate_year", String.format("%s", graduate.data.getYearOfStudies()));
                 etGraduateNames.setText(String.format("%s %s", graduate.data.getName(), graduate.data.getSurname()));
                 etStudentNo.setText(graduate.data.getStudentNo());
                 etSpeciality.setText(graduate.data.getSpeciality());
@@ -219,26 +211,12 @@ public class DeclarationActivity extends AppCompatActivity {
                         if(subject.getTakenUp() == subject.getLimit()) {
                             subject.setIdSubjectStatus(subjectStatus.getIdSubjectStatus());
                         }
-                        declarationViewModel.updateSubject(subject).observe(this, responsee -> {
-                            if(responsee != null && responsee.body != null) {
-                                Log.e("update_subject", String.valueOf(responsee.body.getSuccess()));
-                                Log.e("update_subject", String.valueOf(responsee.body.getMessage()));
-                            } else {
-                                Log.e("update_subject", "failed");
-                            }
-                        });
-                        declarationViewModel.updateGraduate(graduate).observe(this, responsee -> {
-                            if(responsee != null && responsee.body != null) {
-                                Log.e("update_graduate", String.valueOf(responsee.body.getSuccess()));
-                                Log.e("update_graduate", String.valueOf(responsee.body.getMessage()));
-                            } else {
-                                Log.e("update_graduate", "failed");
-                            }
-                        });
+                        declarationViewModel.updateSubject(subject).observe(this, responsee -> {});
+                        declarationViewModel.updateGraduate(graduate).observe(this, responsee -> {});
                         goToMainMenu();
                         showToast("Deklaracja została przyjęta pomyślnie");
                     } else {
-                        showToast("Nie udało się udostępnić deklaracji. Sprawdź czy wszystkie dane zostały wprowadzone poprawnie");
+                        showToast("Nie udało się udostępnić deklaracji. Spróbuj ponownie za chwilę");
                     }
                 }
             });

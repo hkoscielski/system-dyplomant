@@ -17,7 +17,6 @@ public class SubjectListViewModelFactory extends ViewModelProvider.NewInstanceFa
 
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
-        //noinspection unchecked
         return (T) new SubjectListViewModel(subjectRepository, graduateRepository);
     }
 }
