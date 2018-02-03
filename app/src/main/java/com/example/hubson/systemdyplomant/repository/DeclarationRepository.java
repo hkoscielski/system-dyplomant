@@ -33,11 +33,13 @@ public class DeclarationRepository {
         this.appExecutors = appExecutors;
     }
 
-    public synchronized static DeclarationRepository getInstance(DeclarationDao declarationDao, DeclarationStatusDao declarationStatusDao,
+    public static DeclarationRepository getInstance(DeclarationDao declarationDao, DeclarationStatusDao declarationStatusDao,
                                                                 Webservice webservice, AppExecutors executors) {
         if (sInstance == null) {
             synchronized (LOCK) {
-                sInstance = new DeclarationRepository(declarationDao, declarationStatusDao, webservice, executors);
+                if(sInstance == null) {
+                    sInstance = new DeclarationRepository(declarationDao, declarationStatusDao, webservice, executors);
+                }
             }
         }
         return sInstance;

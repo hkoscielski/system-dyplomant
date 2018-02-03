@@ -25,11 +25,13 @@ public class SupervisorRepository {
         this.appExecutors = appExecutors;
     }
 
-    public synchronized static SupervisorRepository getInstance(SupervisorDao supervisorDao, Webservice webservice,
+    public static SupervisorRepository getInstance(SupervisorDao supervisorDao, Webservice webservice,
                                                              AppExecutors executors) {
         if (sInstance == null) {
             synchronized (LOCK) {
-                sInstance = new SupervisorRepository(supervisorDao, webservice, executors);
+                if(sInstance == null) {
+                    sInstance = new SupervisorRepository(supervisorDao, webservice, executors);
+                }
             }
         }
         return sInstance;

@@ -33,11 +33,13 @@ public class GraduateRepository {
         this.appExecutors = appExecutors;
     }
 
-    public synchronized static GraduateRepository getInstance(GraduateDao graduateDao, FormOfStudiesDao formOfStudiesDao,
+    public static GraduateRepository getInstance(GraduateDao graduateDao, FormOfStudiesDao formOfStudiesDao,
                                                               Webservice webservice, AppExecutors executors) {
         if (sInstance == null) {
             synchronized (LOCK) {
-                sInstance = new GraduateRepository(graduateDao, formOfStudiesDao, webservice, executors);
+                if(sInstance == null) {
+                    sInstance = new GraduateRepository(graduateDao, formOfStudiesDao, webservice, executors);
+                }
             }
         }
         return sInstance;

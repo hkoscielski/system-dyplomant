@@ -38,13 +38,15 @@ public class SubjectRepository {
         this.appExecutors = appExecutors;
     }
 
-    public synchronized static SubjectRepository getInstance(SubjectDao subjectDao, SubjectStatusDao subjectStatusDao,
+    public static SubjectRepository getInstance(SubjectDao subjectDao, SubjectStatusDao subjectStatusDao,
                                                              SupervisorDao supervisorDao, Webservice webservice,
                                                              AppExecutors executors) {
         if (sInstance == null) {
             synchronized (LOCK) {
-                sInstance = new SubjectRepository(subjectDao, subjectStatusDao,
-                        supervisorDao, webservice, executors);
+                if(sInstance == null) {
+                    sInstance = new SubjectRepository(subjectDao, subjectStatusDao,
+                            supervisorDao, webservice, executors);
+                }
             }
         }
         return sInstance;

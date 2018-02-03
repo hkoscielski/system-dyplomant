@@ -11,14 +11,16 @@ public class WebserviceImpl {
 
     private WebserviceImpl() {}
 
-    public synchronized static Webservice getInstance() {
+    public static Webservice getInstance() {
         if (sInstance == null) {
             synchronized (LOCK) {
-                sInstance = new Retrofit.Builder()
-                    .baseUrl(ApiConstants.HTTP_GRADUATE_API)
-                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
-                    .addCallAdapterFactory(new LiveDataCallAdapterFactory())
-                    .build().create(Webservice.class);
+                if(sInstance == null) {
+                    sInstance = new Retrofit.Builder()
+                            .baseUrl(ApiConstants.HTTP_GRADUATE_API)
+                            .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
+                            .addCallAdapterFactory(new LiveDataCallAdapterFactory())
+                            .build().create(Webservice.class);
+                }
             }
         }
         return sInstance;

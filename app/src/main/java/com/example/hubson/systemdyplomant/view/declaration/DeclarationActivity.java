@@ -209,9 +209,6 @@ public class DeclarationActivity extends AppCompatActivity {
         String shortDesc = etShortDesc.getText().toString();
         if(language.isEmpty() || purposeRange.isEmpty() || shortDesc.isEmpty()) {
             showToast("Nie udało się udostępnić deklaracji. Sprawdź czy wszystkie dane zostały wypełnione poprawnie");
-            etLanguage.setText("");
-            etPurposeRange.setText("");
-            etShortDesc.setText("");
         } else {
             Declaration declaration = new Declaration(idSubject, sessionManager.getUserId(), language, purposeRange, shortDesc, null, null, idDeclarationStatus);
             declarationViewModel.createDeclaration(declaration).observe(this, response -> {
